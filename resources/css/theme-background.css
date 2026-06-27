@@ -1,0 +1,22 @@
+/* ✅ CARA PALING BENAR & SEDERHANA TANPA JAVASCRIPT */
+body {
+    background-image: url('/images/classroom_light.png');
+    background-size: cover;
+    background-position: center top;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+}
+
+/* Ketika tema DARK aktif (class .dark ada di <html>), otomatis ganti background */
+html.dark body {
+    background-image: url('/images/classroom_dark.png');
+}
+
+/* Efek transparansi agar konten mudah dibaca diatas background */
+.bg-overlay {
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+html.dark .bg-overlay {
+    background-color: rgba(15, 23, 42, 0.85);
+}

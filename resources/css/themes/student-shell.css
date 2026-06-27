@@ -1,0 +1,159 @@
+.student-theme {
+    --student-indigo: linear-gradient(135deg, #4338ca 0%, #3730a3 100%);
+    --student-violet: linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%);
+    --student-emerald: linear-gradient(135deg, #059669 0%, #047857 100%);
+    --student-hero-shadow: 0 14px 34px rgba(30, 64, 175, 0.2), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    --student-hero-border: #6366f1;
+}
+
+.student-theme .bg-gradient-to-br.from-indigo-700.via-indigo-600.to-sky-600,
+.student-theme .bg-gradient-to-r.from-indigo-700.via-indigo-600.to-sky-600 {
+    border-color: var(--student-hero-border) !important;
+    box-shadow: var(--student-hero-shadow) !important;
+}
+
+.student-theme :is(a, button).bg-indigo-600 {
+    background-image: var(--student-indigo);
+    border: 1px solid #4338ca;
+}
+
+.student-theme :is(a, button).bg-indigo-600:hover {
+    filter: brightness(1.05);
+}
+
+.student-theme :is(a, button).bg-violet-600 {
+    background-image: var(--student-violet);
+    border: 1px solid #6d28d9;
+}
+
+.student-theme :is(a, button).bg-violet-600:hover {
+    filter: brightness(1.05);
+}
+
+.student-theme :is(a, button).bg-emerald-600 {
+    background-image: var(--student-emerald);
+    border: 1px solid #059669;
+}
+
+.student-theme :is(a, button).bg-emerald-600:hover {
+    filter: brightness(1.05);
+}
+
+/* Global focus visibility for better keyboard accessibility across student pages. */
+.student-theme :is(a, button, input, select, textarea, [role="button"]):focus-visible {
+    outline: none;
+    border-color: #6366f1 !important;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 0 4px rgba(99, 102, 241, 0.55) !important;
+}
+
+/* Keep actionable controls comfortably tappable on mobile across pages. */
+@media (max-width: 640px) {
+    .student-theme main :is(a, button).inline-flex {
+        min-height: 2.5rem;
+    }
+
+    .student-theme main :is(a, button).rounded-xl,
+    .student-theme main :is(a, button).rounded-lg {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+}
+
+html.dark .student-theme,
+html.dark .student-theme .min-h-screen {
+    background-color: #020617;
+    color: #e2e8f0;
+}
+
+html.dark .student-theme .bg-slate-50 {
+    background-color: #020617 !important;
+}
+
+html.dark .student-theme .bg-white,
+html.dark .student-theme .bg-white\/95,
+html.dark .student-theme .bg-white\/98,
+html.dark .student-theme .bg-white\/80 {
+    background-color: #0f172a !important;
+}
+
+html.dark .student-theme .border-slate-200,
+html.dark .student-theme .border-slate-200\/80 {
+    border-color: #1e293b !important;
+}
+
+html.dark .student-theme .text-slate-900 { color: #f8fafc !important; }
+html.dark .student-theme .text-slate-800 { color: #f1f5f9 !important; }
+html.dark .student-theme .text-slate-700 { color: #cbd5e1 !important; }
+html.dark .student-theme .text-slate-600 { color: #aab9cd !important; }
+html.dark .student-theme .text-slate-500 { color: #9fb0c6 !important; }
+html.dark .student-theme .text-slate-400 { color: #8fa3bc !important; }
+
+html.dark .student-theme .bg-indigo-50 { background-color: #1e1b4b !important; }
+html.dark .student-theme .border-indigo-200 { border-color: #3730a3 !important; }
+html.dark .student-theme .text-indigo-700 { color: #a5b4fc !important; }
+html.dark .student-theme .text-indigo-600,
+html.dark .student-theme .text-indigo-500 { color: #b7c2ff !important; }
+
+html.dark .student-theme .text-amber-700,
+html.dark .student-theme .text-amber-600 { color: #fcd34d !important; }
+
+html.dark .student-theme .bg-emerald-50 { background-color: #052e2b !important; }
+html.dark .student-theme .border-emerald-200 { border-color: #0f766e !important; }
+html.dark .student-theme .text-emerald-700,
+html.dark .student-theme .text-emerald-600 { color: #6ee7b7 !important; }
+
+html.dark .student-theme .bg-rose-50 { background-color: #3f0f1f !important; }
+html.dark .student-theme .border-rose-200 { border-color: #9f1239 !important; }
+html.dark .student-theme .text-rose-700,
+html.dark .student-theme .text-rose-600 { color: #fda4af !important; }
+
+html.dark .student-theme .hover\:bg-slate-50:hover {
+    background-color: #1e293b !important;
+}
+
+html.dark .student-theme .bg-slate-900 {
+    background-color: #0b1220 !important;
+}
+
+html.dark .student-theme :is(a, button).bg-indigo-600 {
+    background-image: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.2), 0 8px 16px rgba(67, 56, 202, 0.2);
+}
+
+html.dark .student-theme :is(a, button).bg-violet-600 {
+    background-image: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 1px rgba(124, 58, 237, 0.2), 0 8px 16px rgba(109, 40, 217, 0.2);
+}
+
+html.dark .student-theme :is(a, button).bg-emerald-600 {
+    background-image: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border-color: #10b981;
+    box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.22), 0 8px 20px rgba(5, 150, 105, 0.22);
+}
+
+html.dark .student-theme :is(a, button, input, select, textarea, [role="button"]):focus-visible {
+    border-color: #818cf8 !important;
+    box-shadow: 0 0 0 2px rgba(2, 6, 23, 0.85), 0 0 0 4px rgba(129, 140, 248, 0.55) !important;
+}
+
+html.dark .student-theme .student-score-card {
+    border-color: #4f46e5 !important;
+    background-image: radial-gradient(circle at 12% 12%, rgba(124, 58, 237, 0.26), transparent 42%),
+        linear-gradient(140deg, #1f1b4f 0%, #312e81 48%, #1e3a8a 100%) !important;
+    box-shadow: 0 14px 34px rgba(30, 58, 138, 0.24), inset 0 0 0 1px rgba(191, 219, 254, 0.08) !important;
+}
+
+html.dark .student-theme .bg-gradient-to-br.from-indigo-700.via-indigo-600.to-sky-600,
+html.dark .student-theme .bg-gradient-to-r.from-indigo-700.via-indigo-600.to-sky-600 {
+    background-image: radial-gradient(circle at 10% 10%, rgba(124, 58, 237, 0.2), transparent 42%),
+        linear-gradient(135deg, #1f1b4f 0%, #312e81 50%, #1e3a8a 100%) !important;
+    border-color: #4f46e5 !important;
+    box-shadow: 0 14px 34px rgba(30, 58, 138, 0.22), inset 0 0 0 1px rgba(191, 219, 254, 0.08) !important;
+}
+
+html.dark .student-theme .student-score-chip {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.14) !important;
+}

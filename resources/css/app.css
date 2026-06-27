@@ -1,0 +1,15 @@
+@import './base/tokens.css';
+@import './components/surfaces.css';
+@import './themes/admin-shell.css';
+@import './themes/student-shell.css';
+@import './pages/student/ai-analysis.css';
+@import './pages/student/review-index.css';
+@import './pages/student/review-show.css';
+@import './pages/student/results-index.css';
+@import './pages/student/results-history.css';
+@import './pages/student/certificate.css';
+@import './pages/student/profile.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

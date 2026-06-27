@@ -1,0 +1,31 @@
+.exam-history-page,
+.practice-history-page {
+    background: #f8fafc;
+}
+
+html.dark .exam-history-page .history-card,
+html.dark .exam-history-page .history-panel,
+html.dark .exam-history-page .history-mobile-row,
+html.dark .exam-history-page .history-mobile-mini,
+html.dark .practice-history-page .history-card,
+html.dark .practice-history-page .history-panel,
+html.dark .practice-history-page .history-mobile-row,
+html.dark .practice-history-page .history-mobile-mini {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+html.dark .exam-history-page .history-table-head,
+html.dark .practice-history-page .history-table-head {
+    background: #111827;
+}
+
+html.dark .exam-history-page .history-divider,
+html.dark .practice-history-page .history-divider {
+    border-color: #1e293b;
+}
+
+html.dark .exam-history-page .history-table-row:hover,
+html.dark .practice-history-page .history-table-row:hover {
+    background: #1e293b;
+}

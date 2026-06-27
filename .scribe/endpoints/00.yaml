@@ -1,0 +1,540 @@
+name: Endpoints
+description: ''
+endpoints:
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/health
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"status":"ok"}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '59'
+          access-control-allow-origin: '*'
+          set-cookie: 'toefl_piksi_v12_session=eyJpdiI6IkJWYWxaNFlpZkFFa1BuVzNMcjY0MGc9PSIsInZhbHVlIjoicXVlcmxOTXMzNnZoaU1QOUhpeXAzRXhFQWJ2MnA5bW0ydGJJekxvWXhiNmllL2JxdVlibmwvQTV2VXozZUNQQWw4MzBoMzk5bkFtY0d4Z25HZEpWVlNSVjk2bEZ3elVOdHdlVWUxbWZYSisxSXlnb3dUMGpOd0ZZb2lKT1hGTUUiLCJtYWMiOiI5NGVkYzdhNTQ4ZmNhNmNkOTkwMzJkY2QzMjk3M2M0N2ViNGI3M2YzZWI0NmRjNmM3OTk4NDMxZTEyYmMzMDhkIiwidGFnIjoiIn0%3D; expires=Sun, 17 May 2026 02:24:59 GMT; Max-Age=7200; path=/; httponly; samesite=lax'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/user
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+          set-cookie: 'toefl_piksi_v12_session=eyJpdiI6ImJlV3VTMitjemdxSGRWYUNITm1wOGc9PSIsInZhbHVlIjoiWnpUd2VUSE1zVzZ0U3R2Qk5sWFhwNnBvdG9DWFBrVlM1SWhHNm0rZ3pPS0FFbzZVWG1COGxyMFZzNXpFU0ptZ3BCN0gzdnVIUGtaajQzMVZvRTRWbElORXJzb01rYTE2ZXJMaERLSm56aUZma3BwWVRsRHdFTFVQRy8rR2w1eG8iLCJtYWMiOiI4YWViZTJlNjBlNWJiMzk3M2UzYzA2NTY5MjY4MzI2NWMzNzY4NWU5MjI5ZDY5ZGIwOTE3N2Q3ZWVhZWY2MTkxIiwidGFnIjoiIn0%3D; expires=Sun, 17 May 2026 02:24:59 GMT; Max-Age=7200; path=/; httponly; samesite=lax'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/student/practice/progress
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get saved practice progress for current user'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+          set-cookie: 'toefl_piksi_v12_session=eyJpdiI6ImZ2T2FOTy9nWDdDdm5PN3VldlBGSVE9PSIsInZhbHVlIjoiTHhZcUJFUmVBWUJkVm5QUUJsejVHU0YyajAvUWxML3BseGREY2l5SkFtN2VmNXVDZ2JQclJzdEVoVmliSHpuR3Z6djFXWkNuQ0tnNWQydVJXOFhJMnJqajMyS3BZekt3ajRXSHMrTTdpTENBTDltclpKaVB2VVlOdUJpTzF3ZDEiLCJtYWMiOiJiZTM1MzZhOWEyNDRlYTMzYWU5ZmEwMmU3ZjQ5OTMyMThlMDBiMWU1ZjIzYWYzOGM0NzRmYzA5OWVhYjI0YjU1IiwidGFnIjoiIn0%3D; expires=Sun, 17 May 2026 02:24:59 GMT; Max-Age=7200; path=/; httponly; samesite=lax'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/student/practice/progress
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Save practice progress for current user'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      answers:
+        custom: []
+        name: answers
+        description: ''
+        required: true
+        example: []
+        type: object
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      active_question:
+        custom: []
+        name: active_question
+        description: 'Must be at least 0.'
+        required: true
+        example: 27
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      time_left:
+        custom: []
+        name: time_left
+        description: 'Must be at least 0. Must not be greater than 7200.'
+        required: true
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      question_ids:
+        custom: []
+        name: question_ids
+        description: ''
+        required: false
+        example:
+          - 16
+        type: 'integer[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      tab_violation_count:
+        custom: []
+        name: tab_violation_count
+        description: 'Must be at least 0. Must not be greater than 3.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      answers: []
+      active_question: 27
+      time_left: 22
+      question_ids:
+        - 16
+      tab_violation_count: 1
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: api/v1/student/practice/progress
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Clear practice progress for current user'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/v1/student/suggestion/exam/{result_id}'
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Generate AI suggestion for exam result'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      result_id:
+        custom: []
+        name: result_id
+        description: 'The ID of the result.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      result_id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/student/suggestion/exam/{result_id}/status'
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      result_id:
+        custom: []
+        name: result_id
+        description: 'The ID of the result.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      result_id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+          set-cookie: 'toefl_piksi_v12_session=eyJpdiI6IjdSUHJRbXllc1h2YmhFM016TEdDV1E9PSIsInZhbHVlIjoiUE40d1JESGNjQUZOeTVxTDFpWDBvcjI2T3UrNm00enNSYmowMGZFNk5FdXBSWG9hcm1Ddk9xRy9Ed0k1L0R1T1VPcGZSaWxWMUtaMjQya1RNbDRXTEs5aUFpN2s4R3RuSDlsV2g5cyt6OWVpV1UrNUNvWElIQUh2TGU0NnFVTGoiLCJtYWMiOiIzMDM2MzhlMmNhYzUyMjg5NjlmOTU1MDc0NTMzZTVkYzE0MDBlNjQ2ZjE3NjY4MzRjNTAxMDcxMWY5NjJkY2Q1IiwidGFnIjoiIn0%3D; expires=Sun, 17 May 2026 02:24:59 GMT; Max-Age=7200; path=/; httponly; samesite=lax'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/v1/student/suggestion/practice/{practiceResult_id}'
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Generate AI suggestion for practice result'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      practiceResult_id:
+        custom: []
+        name: practiceResult_id
+        description: 'The ID of the practiceResult.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      practiceResult_id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/student/suggestion/practice/{practiceResult_id}/status'
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      practiceResult_id:
+        custom: []
+        name: practiceResult_id
+        description: 'The ID of the practiceResult.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      practiceResult_id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+          set-cookie: 'toefl_piksi_v12_session=eyJpdiI6IjhVdDc4RVdMck1COFc3WEZRTWFZclE9PSIsInZhbHVlIjoiVUhaMjRkeXhoVUNYOVU4RXJNWDVCOWZZd3dIZThoZWpQUGZBTVE3NDhxa1JxU1VjNVZMTFFIVUF5UUlnWC8rMGdoNDdwK29wWkJPV0RsUVUyUHRKdi80L1ZSTHpmV1drSzM2WVpYWHlnRlhRcjNzeGpXRkVJVUNNRzZ1eVYwdnQiLCJtYWMiOiI5YTE3NDA3ZTgwMzk5OThkMjc1MzhiMmI4ZGE4YTE3YTZhOTk2YWU1OTQyM2I4MjBiMGJkYTA4NWQ3ODE1N2UwIiwidGFnIjoiIn0%3D; expires=Sun, 17 May 2026 02:24:59 GMT; Max-Age=7200; path=/; httponly; samesite=lax'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: api/v1/student/suggestion/dashboard
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get dashboard suggestions summary'
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+          set-cookie: 'toefl_piksi_v12_session=eyJpdiI6InhoQ21ZcnByaTFoNGtDT204KzQrdmc9PSIsInZhbHVlIjoiRHJzRTlkVWVObHhVZ2ZHdzdjRmNMUklyVTN3UUR5eWdzaW1Ldk5jY2Y2aEU4RW1vSWR6alpYSmNhaks0UFlOSHpYK1JvTE1uYnF3SjcwQWNiaG1sMzd4Y1BhUWpNRklBdi92UmpNSWhQb1l5RXJpSnhDck03enBVSnlrT3lpQmQiLCJtYWMiOiI0ZjBhMzhhMWVjZTk5NjNlNmI1ZDJiZjZjODY5ZjNjYTI0ZWU2NjhlN2Q3NTNhMjgwNDRiZDkyNTdkODg3MTdhIiwidGFnIjoiIn0%3D; expires=Sun, 17 May 2026 02:24:59 GMT; Max-Age=7200; path=/; httponly; samesite=lax'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: 'api/v1/student/review/{practiceResult_id}/items/{item_id}'
+    metadata:
+      custom: []
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      practiceResult_id:
+        custom: []
+        name: practiceResult_id
+        description: 'The ID of the practiceResult.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      item_id:
+        custom: []
+        name: item_id
+        description: 'The ID of the item.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      practiceResult_id: 1
+      item_id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null

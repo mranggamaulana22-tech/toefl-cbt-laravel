@@ -1,0 +1,21 @@
+.review-index-page {
+    background: #f8fafc;
+}
+
+html.dark .review-index-page .review-index-hero {
+    box-shadow: 0 18px 50px rgba(30, 64, 175, 0.18);
+}
+
+html.dark .review-index-page .review-index-stat {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+html.dark .review-index-page .review-index-table {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+html.dark .review-index-page .review-index-row {
+    border-color: #1e293b;
+}

@@ -1,0 +1,28 @@
+.results-page {
+    background: #f8fafc;
+}
+
+html.dark .results-page .results-card,
+html.dark .results-page .results-panel,
+html.dark .results-page .results-mobile-row,
+html.dark .results-page .results-mobile-mini {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+html.dark .results-page .results-panel-head {
+    background: #111827;
+    border-color: #334155;
+}
+
+html.dark .results-page .results-table-head {
+    background: #111827;
+}
+
+html.dark .results-page .results-table-row:hover {
+    background: #1e293b;
+}
+
+html.dark .results-page .results-divider {
+    border-color: #1e293b;
+}

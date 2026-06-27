@@ -1,0 +1,48 @@
+Data ujian TOEFL saya:
+- Total: __SCORE_TOTAL__/120
+- Listening: __LISTENING__/10 (__LISTENING_PERCENT__%)
+- Structure: __STRUCTURE__/10 (__STRUCTURE_PERCENT__%)
+- Reading: __READING__/10 (__READING_PERCENT__%)
+- Salah per section saat ini: Listening __LISTENING_WRONG__, Structure __STRUCTURE_WRONG__, Reading __READING_WRONG__
+- Durasi: __DURATION_MINUTES__ menit
+- Section terlemah saat ini: __WEAKEST_SECTION__
+- Section terkuat saat ini: __STRONGEST_SECTION__
+- Section yang sedang turun: __DECLINE_CONTEXT__
+
+Perbandingan 1 sesi sebelumnya (benar/10):
+- Listening: __PREVIOUS_SESSION_LISTENING__/10
+- Structure: __PREVIOUS_SESSION_STRUCTURE__/10
+- Reading: __PREVIOUS_SESSION_READING__/10
+
+__TREND_CONTEXT__
+
+Tugas Anda:
+0) Hanya berikan saran untuk section Listening, Structure, dan Reading. Jangan bahas Speaking.
+1) Beri 1 kekuatan utama dan 1 kelemahan utama.
+2) Buat "error_pattern": ringkasan pola kesalahan berdasarkan data benar/salah per section + perbandingan 1 sesi sebelumnya. Jika terlihat konsisten lemah di section yang sama, sebut jelas (contoh: 2 sesi berturut-turut).
+3) Analisa delta: sebut naik/turun total dan beri warning jika ada section turun.
+4) Jelaskan "kenapa" penurunan bisa terjadi berdasarkan pola skor (hipotesis paling mungkin, bukan kepastian).
+5) Beri 1 "motivation": kalimat penyemangat belajar yang personal, singkat, dan relevan dengan kondisi skor saat ini.
+6) Beri rencana latihan 3 hari (menit/hari + fokus topik).
+7) "priority_tip" WAJIB menyebut 1 section prioritas paling kritis berdasarkan skor/delta aktual + 1 aksi spesifik yang harus dilakukan hari ini.
+8) "warning" WAJIB menyebut risiko konkret jika penurunan dibiarkan, dan harus merujuk ke section yang turun atau section terendah saat ini.
+9) Jangan gunakan saran generik. Semua isi harus relevan langsung ke angka di atas.
+10) Gunakan bahasa awam tingkat siswa SMA: hindari jargon seperti "delta", "skimming", "scanning", "mock test", kecuali benar-benar perlu.
+11) Jika terpaksa memakai istilah TOEFL/teknis, langsung beri arti singkat dalam tanda kurung. Contoh: "latihan bacaan cepat (membaca cepat untuk cari inti)".
+12) Jangan memakai singkatan atau istilah Inggris tanpa penjelasan.
+13) Jika menyebut angka skor, WAJIB pakai angka persis dari data (Listening __LISTENING__/10, Structure __STRUCTURE__/10, Reading __READING__/10, Total __SCORE_TOTAL__/120). Jangan mengarang angka baru.
+14) Untuk fields "strengths", "weaknesses", "error_pattern", "motivation", "priority_tip", dan "warning": jangan tulis format skor seperti "x/10" atau persentase agar tidak menyesatkan; cukup pakai deskripsi sederhana.
+
+Berikan jawaban RAW berlabel (bukan JSON, bukan markdown) dengan format WAJIB berikut:
+KEKUATAN: <1 kalimat>
+KELEMAHAN: <1 kalimat>
+POLA_KESALAHAN: <1-2 kalimat>
+MOTIVASI: <1 kalimat penyemangat>
+PRIORITY: <1 kalimat aksi utama hari ini>
+WARNING: <1 kalimat risiko konkret>
+RENCANA_3_HARI:
+Hari 1 | Fokus: <Listening/Structure/Reading/Mock Test> | Durasi: <xx mnt> | Tugas: <teks>
+Hari 2 | Fokus: <...> | Durasi: <xx mnt> | Tugas: <teks>
+Hari 3 | Fokus: <...> | Durasi: <xx mnt> | Tugas: <teks>
+
+Jangan tambah label lain di luar format di atas.

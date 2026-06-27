@@ -1,0 +1,122 @@
+.student-profile-page {
+    position: relative;
+    background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.10), transparent 36%), linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+.student-profile-hero {
+    background: linear-gradient(135deg, #3730a3 0%, #4f46e5 52%, #0ea5e9 100%);
+}
+
+.student-profile-card {
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+}
+
+.student-profile-section-title {
+    color: #0f172a;
+}
+
+.student-profile-section-lead {
+    color: #475569;
+}
+
+.student-profile-page input,
+.student-profile-page textarea,
+.student-profile-page select {
+    background-color: #fff;
+    color: #0f172a;
+}
+
+.student-profile-page label {
+    color: #334155;
+}
+
+.student-profile-photo-panel {
+    background: linear-gradient(180deg, rgba(248, 250, 252, 0.85) 0%, rgba(255, 255, 255, 0.94) 100%);
+}
+
+.student-profile-photo-preview,
+.student-profile-photo-fallback {
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+}
+
+.student-profile-photo-panel input[type="file"] {
+    border-color: rgba(148, 163, 184, 0.7);
+}
+
+html.dark .student-profile-page {
+    background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.16), transparent 34%), linear-gradient(180deg, #020617 0%, #0f172a 100%);
+    color: #e2e8f0;
+}
+
+html.dark .student-profile-hero {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 55%, #0f766e 100%);
+}
+
+html.dark .student-profile-card {
+    background: rgba(15, 23, 42, 0.92);
+    border-color: #1e293b;
+    box-shadow: 0 18px 50px rgba(2, 6, 23, 0.55);
+}
+
+html.dark .student-profile-section-title {
+    color: #f8fafc;
+}
+
+html.dark .student-profile-section-lead {
+    color: #cbd5e1;
+}
+
+html.dark .student-profile-page input,
+html.dark .student-profile-page textarea,
+html.dark .student-profile-page select {
+    background-color: #0b1220;
+    color: #e2e8f0;
+    border-color: #334155;
+}
+
+html.dark .student-profile-page label {
+    color: #cbd5e1;
+}
+
+html.dark .student-profile-photo-panel {
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.78) 0%, rgba(11, 18, 32, 0.92) 100%);
+    border-color: rgba(51, 65, 85, 0.85);
+}
+
+html.dark .student-profile-photo-panel p.text-slate-800 {
+    color: #f8fafc;
+}
+
+html.dark .student-profile-photo-panel p.text-slate-500,
+html.dark .student-profile-photo-panel label.text-slate-600 {
+    color: #cbd5e1;
+}
+
+html.dark .student-profile-photo-panel input[type="file"] {
+    background-color: #0b1220;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+
+html.dark .student-profile-photo-panel input[type="file"]::file-selector-button {
+    background: #1e293b;
+    color: #e2e8f0;
+}
+
+html.dark .student-profile-page .text-gray-900,
+html.dark .student-profile-page .text-gray-800,
+html.dark .student-profile-page .text-gray-700,
+html.dark .student-profile-page .text-gray-600,
+html.dark .student-profile-page .text-gray-500,
+html.dark .student-profile-page .text-red-700,
+html.dark .student-profile-page .text-red-600 {
+    color: inherit !important;
+}
+
+html.dark .student-profile-page .border-gray-100,
+html.dark .student-profile-page .border-gray-200,
+html.dark .student-profile-page .border-red-100 {
+    border-color: #334155 !important;
+}

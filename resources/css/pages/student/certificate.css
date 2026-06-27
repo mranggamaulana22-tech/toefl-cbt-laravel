@@ -1,0 +1,42 @@
+html.dark body {
+    background: #020617;
+    color: #e2e8f0;
+}
+
+html.dark .cert-page .cert-shell,
+html.dark .cert-page .cert-card,
+html.dark .cert-page .cert-note,
+html.dark .cert-page .cert-mini {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+    color: #e2e8f0 !important;
+}
+
+html.dark .cert-page .cert-mini-total {
+    background: #1e1b4b !important;
+    border-color: #3730a3 !important;
+}
+
+html.dark .cert-page .cert-hero {
+    background-image: radial-gradient(circle at 10% 10%, rgba(124, 58, 237, 0.2), transparent 42%),
+        linear-gradient(135deg, #1f1b4f 0%, #312e81 50%, #1e3a8a 100%) !important;
+    border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+    box-shadow: 0 14px 34px rgba(30, 58, 138, 0.22), inset 0 0 0 1px rgba(191, 219, 254, 0.08);
+}
+
+html.dark .cert-page .cert-muted {
+    color: #94a3b8 !important;
+}
+
+@media print {
+    html.dark body,
+    html.dark .cert-page .cert-shell,
+    html.dark .cert-page .cert-card,
+    html.dark .cert-page .cert-note,
+    html.dark .cert-page .cert-mini,
+    html.dark .cert-page .cert-mini-total {
+        background: #fff !important;
+        color: #0f172a !important;
+        border-color: #e2e8f0 !important;
+    }
+}

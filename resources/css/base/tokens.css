@@ -1,0 +1,21 @@
+[x-cloak] {
+    display: none !important;
+}
+
+:root {
+    color-scheme: light;
+
+    --piksi-purple: #4338ca;
+    --piksi-red: #E24B4A;
+    --piksi-blue: #378ADD;
+    --piksi-green: #2f8f2f;
+    --piksi-gray-bg: #f8fafc;
+    --piksi-card: #fff;
+    --piksi-border: #e2e8f0;
+    --piksi-text: #0f172a;
+    --piksi-muted: #64748b;
+}
+
+html.dark {
+    color-scheme: dark;
+}

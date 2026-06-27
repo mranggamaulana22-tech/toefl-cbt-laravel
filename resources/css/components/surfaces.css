@@ -1,0 +1,30 @@
+/* Shared surface behavior for student and admin shells. */
+:where(.student-theme, .admin-theme),
+:where(.student-theme, .admin-theme) :is(div, section, article, aside, nav, header, footer, main, a, button, span, p, h1, h2, h3, h4, h5, h6, li, td, th, input, textarea, select) {
+    transition: background-color 220ms ease, color 220ms ease, border-color 220ms ease, box-shadow 240ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :where(.student-theme, .admin-theme),
+    :where(.student-theme, .admin-theme) * {
+        transition: none !important;
+    }
+}
+
+@media (max-width: 640px) {
+    :where(.student-theme, .admin-theme) .rounded-3xl {
+        border-radius: 1rem !important;
+    }
+
+    :where(.student-theme, .admin-theme) .rounded-2xl {
+        border-radius: 0.875rem !important;
+    }
+
+    :where(.student-theme, .admin-theme) .p-6 {
+        padding: 1rem !important;
+    }
+
+    :where(.student-theme, .admin-theme) .p-5 {
+        padding: 0.875rem !important;
+    }
+}

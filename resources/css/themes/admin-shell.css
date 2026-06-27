@@ -1,0 +1,40 @@
+/* Admin shell namespace for future admin-only theme tuning. */
+.admin-theme {
+    --admin-hero-border: #0f172a;
+    --admin-hero-shadow: 0 14px 34px rgba(15, 23, 42, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.admin-theme .bg-gradient-to-br.from-indigo-700.via-indigo-600.to-sky-600,
+.admin-theme .bg-gradient-to-r.from-indigo-700.via-indigo-600.to-sky-600 {
+    border-color: var(--admin-hero-border) !important;
+    box-shadow: var(--admin-hero-shadow) !important;
+}
+
+html.dark .admin-theme,
+html.dark .admin-theme .min-h-screen {
+    background-color: #020617;
+    color: #e2e8f0;
+}
+
+html.dark .admin-theme .bg-slate-50 {
+    background-color: #020617 !important;
+}
+
+html.dark .admin-theme .bg-white,
+html.dark .admin-theme .bg-white\/95,
+html.dark .admin-theme .bg-white\/98,
+html.dark .admin-theme .bg-white\/80 {
+    background-color: #0f172a !important;
+}
+
+html.dark .admin-theme .border-slate-200,
+html.dark .admin-theme .border-slate-200\/80 {
+    border-color: #1e293b !important;
+}
+
+html.dark .admin-theme .text-slate-900 { color: #f8fafc !important; }
+html.dark .admin-theme .text-slate-800 { color: #f1f5f9 !important; }
+html.dark .admin-theme .text-slate-700 { color: #cbd5e1 !important; }
+html.dark .admin-theme .text-slate-600 { color: #aab9cd !important; }
+html.dark .admin-theme .text-slate-500 { color: #9fb0c6 !important; }
+html.dark .admin-theme .text-slate-400 { color: #8fa3bc !important; }

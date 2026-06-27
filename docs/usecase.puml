@@ -1,0 +1,92 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Pengunjung" as Guest
+actor "Mahasiswa" as Student
+actor "Admin" as Admin
+actor "Layanan AI (eksternal)" as AIService
+actor "Scheduler / Workers" as Scheduler
+' Storage removed: infrastructure detail removed from use-case diagram.
+
+rectangle "Sistem TOEFL Piksi" {
+  usecase "Register" as UC_Register
+  usecase "Login" as UC_Login
+  usecase "Lupa Kata Sandi" as UC_Forgot
+  usecase "Verifikasi Email" as UC_Verify
+
+  usecase "Mulai Ujian" as UC_StartExam
+  usecase "Kerjakan Ujian" as UC_TakeExam
+  usecase "Kirim Ujian" as UC_SubmitExam
+  usecase "Lihat Hasil Ujian" as UC_ViewResults
+  usecase "Unduh Sertifikat" as UC_DownloadCert
+
+  usecase "Mulai Latihan" as UC_StartPractice
+  usecase "Kerjakan Latihan" as UC_TakePractice
+  usecase "Simpan / Sinkronisasi Progress Latihan" as UC_SavePracticeProgress
+  usecase "Lihat Riwayat Latihan" as UC_ViewPracticeHistory
+  usecase "Review Latihan" as UC_ReviewPractice
+
+  usecase "Proses Analisis AI" as UC_RequestAIAnalysis
+  usecase "Lihat Analisis AI" as UC_ViewAIAnalysis
+
+  usecase "Ubah Profil" as UC_ChangeProfile
+  usecase "Ubah Password" as UC_ChangePassword
+
+  usecase "Kelola Soal Ujian" as UC_ManageExamQuestions
+  usecase "Kelola Soal Latihan" as UC_ManagePracticeQuestions
+  usecase "Ekspor Soal Ujian (CSV)" as UC_ExportExamQuestions
+  usecase "Ekspor Soal Latihan (CSV)" as UC_ExportPracticeQuestions
+  usecase "Ekspor Gradebook (CSV)" as UC_ExportGradebook
+  usecase "Lihat Gradebook" as UC_ViewGradebook
+  usecase "Kelola Data Mahasiswa" as UC_ManageStudents
+  usecase "Buka / Tutup Sesi Ujian" as UC_ToggleExamSession
+  usecase "Lihat Riwayat Latihan (Admin)" as UC_ViewPracticeHistoryAdmin
+}
+
+' Associations: human actors
+Guest --> UC_Register
+Guest --> UC_Login
+Guest --> UC_Forgot
+Guest --> UC_Verify
+
+Student --> UC_StartExam
+UC_StartExam .> UC_TakeExam : <<include>>
+UC_StartExam .> UC_SubmitExam : <<include>>
+Student --> UC_ViewResults
+Student --> UC_DownloadCert
+
+Student --> UC_StartPractice
+UC_StartPractice .> UC_TakePractice : <<include>>
+UC_StartPractice .> UC_SavePracticeProgress : <<include>>
+Student --> UC_ViewPracticeHistory
+
+UC_ReviewPractice .> UC_TakePractice : <<extend>>
+
+Student --> UC_ReviewPractice
+
+Student --> UC_ViewAIAnalysis
+Student --> UC_ChangeProfile
+Student --> UC_ChangePassword
+
+Admin --> UC_ManageExamQuestions
+Admin --> UC_ManagePracticeQuestions
+Admin --> UC_ExportExamQuestions
+Admin --> UC_ExportPracticeQuestions
+Admin --> UC_ExportGradebook
+Admin --> UC_ViewGradebook
+Admin --> UC_ManageStudents
+Admin --> UC_ToggleExamSession
+Admin --> UC_ViewPracticeHistoryAdmin
+Admin --> UC_ChangeProfile
+Admin --> UC_ChangePassword
+
+' External systems associations
+AIService --> UC_RequestAIAnalysis : "proses & hasil analisis"
+Scheduler --> UC_RequestAIAnalysis : "enqueue / jalankan pekerjaan latar"
+Scheduler --> UC_ExportGradebook : "jadwalkan ekspor besar (opsional)"
+
+' AI request triggered automatically after submit
+UC_SubmitExam .> UC_RequestAIAnalysis : <<extend>>
+
+@enduml
