@@ -17,6 +17,10 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+        {{-- SweetAlert2 CSS & Animate.css untuk animasi pop-up yang smooth --}}
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
         {{-- Player Lottie untuk file .json (specific version to prevent duplicate registration) --}}
         <script src="https://unpkg.com/@lottiefiles/lottie-player@2.0.2/dist/lottie-player.js" defer></script>
         <script>
@@ -98,6 +102,9 @@
                 </div>
             </div>
         </x-modal>
+
+        {{-- SweetAlert2 JS CDN JavaScript Injection --}}
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         @stack('scripts')
     </body>

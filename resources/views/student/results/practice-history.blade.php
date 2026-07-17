@@ -7,9 +7,6 @@
                 <p class="mt-1 text-sm text-slate-500">Semua hasil latihan yang sudah pernah kamu submit.</p>
             </div>
             <div class="flex items-center gap-2">
-                <a href="{{ route('student.ai.index') }}" class="inline-flex items-center rounded-xl bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-700">
-                    Halaman AI Analisis
-                </a>
                 <a href="{{ route('student.results.index') }}" class="inline-flex items-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-200 hover:text-emerald-700">
                     Kembali ke Ringkasan
                 </a>

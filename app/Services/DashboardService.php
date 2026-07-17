@@ -18,9 +18,11 @@ class DashboardService
     public function adminDashboardData(): array
     {
         $examSetting = ExamSetting::current();
+        $examReadiness = app(QuestionSelectionService::class)->getExamReadinessReport();
 
         return [
             'examSetting' => $examSetting,
+            'examReadiness' => $examReadiness,
             'stats' => [
                 'total_mahasiswa' => User::where('role', 'student')->count(),
                 'total_soal' => Question::count(),

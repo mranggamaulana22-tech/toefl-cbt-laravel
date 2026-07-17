@@ -53,6 +53,10 @@ class ExamFlowService
             if (!$examSession) {
                 $questionIds = $this->questionSelectionService->generateOrderedExamQuestionIds();
 
+                if (empty($questionIds)) {
+                    throw new \RuntimeException('Bank soal ujian belum memenuhi kebutuhan 140 soal. Sesi ujian tidak bisa dimulai.');
+                }
+
                 $examSession = ExamSession::create([
                     'user_id' => $userId,
                     'exam_settings_id' => $setting->id,

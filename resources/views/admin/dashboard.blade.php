@@ -105,6 +105,20 @@
                                 <div class="flex items-center gap-4 mb-3 text-xs text-slate-500">
                                     <span>Sesi aktif: <span class="font-semibold text-slate-800 dark:text-slate-200">{{ $examSetting->current_cycle }}</span></span>
                                 </div>
+                                <div class="mb-4 rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-300 text-slate-600">
+                                    <p class="font-semibold text-slate-900 dark:text-white mb-2">Kesiapan Bank Soal Ujian</p>
+                                    <div class="grid grid-cols-1 gap-2">
+                                        @foreach($examReadiness['sections'] as $section => $data)
+                                            <div class="flex items-center justify-between gap-3 rounded-md px-3 py-2 {{ $data['shortage'] > 0 ? 'bg-red-50 text-red-700 dark:bg-red-500/10 dark:text-red-300' : 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300' }}">
+                                                <span class="font-semibold capitalize">{{ $section }}</span>
+                                                <span>{{ $data['available'] }} / {{ $data['required'] }} soal</span>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                    <p class="mt-3 font-semibold {{ $examReadiness['can_start'] ? 'text-emerald-600 dark:text-emerald-300' : 'text-red-600 dark:text-red-300' }}">
+                                        {{ $examReadiness['can_start'] ? 'Bank soal siap untuk membuka sesi ujian.' : 'Bank soal belum cukup. Sesi ujian tidak bisa dijalankan.' }}
+                                    </p>
+                                </div>
                                 <div class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold mb-3
                                     {{ $examSetting->is_open ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400' : 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400' }}">
                                     <span class="w-1.5 h-1.5 rounded-full {{ $examSetting->is_open ? 'bg-emerald-500' : 'bg-red-500' }} animate-pulse"></span>
@@ -112,16 +126,34 @@
                                 </div>
                                 <p class="text-xs text-slate-400 leading-relaxed mb-4">Satu sesi harus ditutup dulu sebelum membuka sesi berikutnya.</p>
                                 
-                                <button type="button" 
-                                    @click="
-                                        showConfirm = true; 
-                                        confirmTitle = '{{ $examSetting->is_open ? 'Tutup Sesi Ujian?' : 'Mulai Sesi Ujian Baru?' }}'; 
-                                        confirmMessage = '{{ $examSetting->is_open ? 'Mahasiswa tidak akan bisa lagi mengerjakan ujian pada sesi ini.' : 'Sesi ujian baru akan dibuat dan dapat diakses oleh mahasiswa.' }}';
-                                        confirmRoute = '{{ $examSetting->is_open ? route('admin.exam.close-session') : route('admin.exam.start-session') }}';
-                                    "
-                                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg py-2.5 transition transform active:scale-95 shadow-lg shadow-indigo-600/20">
-                                    {{ $examSetting->is_open ? 'Tutup Sesi Ujian' : 'Mulai Sesi Ujian Baru' }}
-                                </button>
+                                @if($examSetting->is_open)
+                                    <button type="button" 
+                                        @click="
+                                            showConfirm = true; 
+                                            confirmTitle = 'Tutup Sesi Ujian?'; 
+                                            confirmMessage = 'Mahasiswa tidak akan bisa lagi mengerjakan ujian pada sesi ini.';
+                                            confirmRoute = '{{ route('admin.exam.close-session') }}';
+                                        "
+                                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg py-2.5 transition transform active:scale-95 shadow-lg shadow-indigo-600/20">
+                                        Tutup Sesi Ujian
+                                    </button>
+                                @elseif($examReadiness['can_start'])
+                                    <button type="button" 
+                                        @click="
+                                            showConfirm = true; 
+                                            confirmTitle = 'Mulai Sesi Ujian Baru?'; 
+                                            confirmMessage = 'Sesi ujian baru akan dibuat dan dapat diakses oleh mahasiswa.';
+                                            confirmRoute = '{{ route('admin.exam.start-session') }}';
+                                        "
+                                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg py-2.5 transition transform active:scale-95 shadow-lg shadow-indigo-600/20">
+                                        Mulai Sesi Ujian Baru
+                                    </button>
+                                @else
+                                    <button type="button" disabled
+                                        class="w-full cursor-not-allowed bg-slate-300 text-slate-600 text-sm font-bold rounded-lg py-2.5 shadow-sm dark:bg-white/10 dark:text-slate-400">
+                                        Bank Soal Belum Cukup
+                                    </button>
+                                @endif
                             </div>
 
                             {{-- Aktivitas Terbaru --}}

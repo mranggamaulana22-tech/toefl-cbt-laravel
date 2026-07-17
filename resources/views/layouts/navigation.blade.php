@@ -17,7 +17,8 @@
                 ['label' => 'Mulai Tes', 'route' => 'exam.start', 'active' => 'exam.*'],
                 ['label' => 'Mode Latihan', 'route' => 'practice.start', 'active' => 'practice.*'],
                 ['label' => 'Review AI', 'route' => 'student.review.index', 'active' => 'student.review.*'],
-                ['label' => 'AI Analisis', 'route' => 'student.ai.index', 'active' => 'student.ai.*'],
+                // Berikan flag 'is_locked' khusus untuk AI Analisis
+                ['label' => 'AI Analisis', 'route' => 'student.ai.index', 'active' => 'student.ai.*', 'is_locked' => true],
                 ['label' => 'Riwayat', 'route' => 'student.results.index', 'active' => 'student.results.*'],
             ];
 
@@ -39,9 +40,16 @@
 
                 <div class="hidden max-w-full flex-nowrap overflow-hidden lg:flex items-center gap-1 rounded-full border border-slate-200 bg-slate-50 p-1.5 shadow-inner">
                     @foreach ($desktopLinks as $link)
-                        <x-nav-link :href="route($link['route'])" :active="request()->routeIs($link['active'])" class="rounded-full whitespace-nowrap px-3 py-2 text-sm font-semibold transition">
-                            {{ $link['label'] }}
-                        </x-nav-link>
+                        @if(isset($link['is_locked']) && $link['is_locked'])
+                            {{-- Tampilan Tombol Tergembok untuk Desktop --}}
+                            <a href="javascript:void(0);" onclick="showAiLockedAlert()" class="rounded-full whitespace-nowrap px-3 py-2 text-sm font-semibold text-slate-400 cursor-not-allowed opacity-60 hover:text-slate-400 select-none flex items-center gap-1">
+                                🔒 {{ $link['label'] }}
+                            </a>
+                        @else
+                            <x-nav-link :href="route($link['route'])" :active="request()->routeIs($link['active'])" class="rounded-full whitespace-nowrap px-3 py-2 text-sm font-semibold transition">
+                                {{ $link['label'] }}
+                            </x-nav-link>
+                        @endif
                     @endforeach
                 </div>
             </div>
@@ -110,9 +118,16 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden border-t border-slate-200 bg-white/98 backdrop-blur-xl">
         <div class="space-y-2 px-4 py-4">
             @foreach ($mobileLinks as $link)
-                <x-responsive-nav-link :href="route($link['route'])" :active="request()->routeIs($link['active'])">
-                    {{ $link['label'] }}
-                </x-responsive-nav-link>
+                @if(isset($link['is_locked']) && $link['is_locked'])
+                    {{-- Tampilan Tombol Tergembok untuk Mobile --}}
+                    <a href="javascript:void(0);" onclick="showAiLockedAlert()" class="block w-full pl-3 pr-4 py-2 border-l-4 border-transparent text-left text-base font-medium text-slate-400 cursor-not-allowed opacity-60 select-none">
+                        🔒 {{ $link['label'] }}
+                    </a>
+                @else
+                    <x-responsive-nav-link :href="route($link['route'])" :active="request()->routeIs($link['active'])">
+                        {{ $link['label'] }}
+                    </x-responsive-nav-link>
+                @endif
             @endforeach
         </div>
 
@@ -159,3 +174,35 @@
         </div>
     </div>
 </nav>
+
+{{-- SCRIPT ALERT PENGEMBANGAN DENGAN DESAIN PREMIUM --}}
+<script>
+    function showAiLockedAlert() {
+        const isDarkMode = document.documentElement.classList.contains('dark');
+
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                title: '🔒 Fitur Belum Siap, Gess!',
+                html: '<p class="text-sm font-sans tracking-wide leading-relaxed">Modul <strong>AI Analisis</strong> masih dalam tahap pemeliharaan & pengembangan intensif.</p><p class="mt-3 text-xs text-indigo-500 dark:text-indigo-400 font-bold uppercase tracking-wider">Sabar ya gess, bakal rilis secepatnya! 🙏🏼</p>',
+                icon: 'info',
+                background: isDarkMode ? '#1f2937' : '#ffffff', 
+                color: isDarkMode ? '#f3f4f6' : '#1f2937',
+                confirmButtonText: 'Oke Gess!',
+                confirmButtonColor: '#4F46E5', 
+                customClass: {
+                    popup: 'rounded-3xl border border-slate-100/10 shadow-2xl font-sans',
+                    title: 'font-bold text-xl tracking-tight pt-4',
+                    confirmButton: 'rounded-xl px-6 py-2.5 text-sm font-semibold tracking-wide shadow-lg shadow-indigo-500/20 transition-all hover:scale-105'
+                },
+                showClass: {
+                    popup: 'animate__animated animate__fadeInUp animate__faster'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutDown animate__faster'
+                }
+            });
+        } else {
+            alert('Fitur ini masih di tahap pengembangan, sabar ya gess... 🙏🏼');
+        }
+    }
+</script>

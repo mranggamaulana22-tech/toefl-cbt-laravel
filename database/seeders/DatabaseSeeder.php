@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,8 +13,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
-            QuestionSeeder::class,
-            PracticeQuestionSeeder::class,
+            QuestionSeeder::class,         // Memasukkan 140 Soal Ujian
+            PracticeQuestionSeeder::class, // Memasukkan 140 Soal Latihan
         ]);
     }
 }

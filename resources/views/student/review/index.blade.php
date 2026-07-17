@@ -2,7 +2,6 @@
     @include('student.review.partials.review-bg')
     @include('student.review.partials.index-styles')
 
-    <!-- Overlay untuk page transition -->
     <div id="_rip-overlay" class="fixed inset-0 z-[100] bg-gradient-to-r from-violet-600 to-indigo-600 opacity-0 pointer-events-none transition-opacity duration-300"></div>
 
     @php
@@ -39,9 +38,6 @@
                             <p class="mt-1 text-sm text-slate-500">Pilih sesi latihan yang ingin kamu review. Fitur ini hanya untuk latihan, bukan ujian.</p>
                         </div>
                         <div class="flex items-center gap-2">
-                            <a href="{{ route('student.ai.index') }}" class="inline-flex items-center rounded-xl bg-violet-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-violet-700">
-                                Ke AI Analisis
-                            </a>
                             <a href="{{ route('practice.start') }}" class="inline-flex items-center rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-emerald-200 hover:text-emerald-700">
                                 Mulai Latihan
                             </a>

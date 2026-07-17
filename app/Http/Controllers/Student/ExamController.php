@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\View\View;
 
 /**
- * Controller for exam flow (full 50-question exam)
+ * Controller for exam flow (full 140-question exam)
  * Handles: start exam, display exam test, submit exam answers
  * 
  * Related controllers:
@@ -40,7 +40,7 @@ class ExamController extends Controller
     }
 
     /**
-     * Display exam test page with 50 questions
+    * Display exam test page with 140 questions
      */
     public function test(): View|RedirectResponse
     {

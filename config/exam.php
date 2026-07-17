@@ -11,11 +11,11 @@ return [
      * Total questions and per-section targets for exam sessions
      */
     'exam' => [
-        'total_questions' => 50,
+        'total_questions' => 140,
         'sections' => [
-            'listening' => 17,
-            'structure' => 17,
-            'reading' => 16,
+            'listening' => 50,
+            'structure' => 40,
+            'reading' => 50,
         ],
         'section_order' => ['listening', 'structure', 'reading'],
     ],
@@ -28,15 +28,6 @@ return [
         'section_order' => ['listening', 'structure', 'reading'],
     ],
 
-    /**
-     * Scoring Configuration
-     * TOEFL score conversion formulas
-     */
-    'scoring' => [
-        'base_score' => 20,
-        'multiplier' => 1.2,
-        'total_formula' => 'round((listening + structure + reading) * 10 / 3)',
-    ],
 
     /**
      * Review Quota Configuration

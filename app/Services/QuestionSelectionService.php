@@ -12,6 +12,44 @@ use Illuminate\Support\Collection;
  */
 class QuestionSelectionService
 {
+    public function getExamRequirements(): array
+    {
+        return config('exam.exam');
+    }
+
+    public function getExamReadinessReport(): array
+    {
+        $examConfig = $this->getExamRequirements();
+        $sectionTargets = $examConfig['sections'];
+        $sectionOrder = $examConfig['section_order'];
+
+        $sections = [];
+        $canStart = true;
+
+        foreach ($sectionOrder as $section) {
+            $required = (int) ($sectionTargets[$section] ?? 0);
+            $available = (int) Question::where('category', $section)->count();
+            $shortage = max(0, $required - $available);
+
+            if ($shortage > 0) {
+                $canStart = false;
+            }
+
+            $sections[$section] = [
+                'required' => $required,
+                'available' => $available,
+                'shortage' => $shortage,
+            ];
+        }
+
+        return [
+            'can_start' => $canStart,
+            'required_total' => (int) $examConfig['total_questions'],
+            'available_total' => (int) Question::count(),
+            'sections' => $sections,
+        ];
+    }
+
     /**
      * Select and order question IDs for exam
      * Returns configured number of questions distributed across sections
@@ -19,8 +57,14 @@ class QuestionSelectionService
      */
     public function generateOrderedExamQuestionIds(): array
     {
+        $report = $this->getExamReadinessReport();
+
+        if (! $report['can_start']) {
+            return [];
+        }
+
         $selectedIds = [];
-        $examConfig = config('exam.exam');
+        $examConfig = $this->getExamRequirements();
         $sectionTargets = $examConfig['sections'];
         $sectionOrder = $examConfig['section_order'];
         $examTotal = $examConfig['total_questions'];
@@ -42,35 +86,12 @@ class QuestionSelectionService
             $selectedIds = array_merge($selectedIds, $sectionIds);
         }
 
-        // If we don't have enough questions, fill remaining slots from any section
-        $remaining = $examTotal - count($selectedIds);
-
-        if ($remaining > 0) {
-            foreach ($sectionOrder as $section) {
-                if ($remaining <= 0) {
-                    break;
-                }
-
-                $extraIds = Question::where('category', $section)
-                    ->whereNotIn('id', $selectedIds)
-                    ->inRandomOrder()
-                    ->limit($remaining)
-                    ->pluck('id')
-                    ->all();
-
-                if (!empty($extraIds)) {
-                    $selectedIds = array_merge($selectedIds, $extraIds);
-                    $remaining = $examTotal - count($selectedIds);
-                }
-            }
-        }
-
         return array_values(array_slice($selectedIds, 0, $examTotal));
     }
 
     /**
      * Select and order question IDs for practice
-     * Returns all practice questions distributed by section (from config order)
+    * Returns all practice questions distributed by section order from config
      */
     public function generateOrderedPracticeQuestionIds(): array
     {

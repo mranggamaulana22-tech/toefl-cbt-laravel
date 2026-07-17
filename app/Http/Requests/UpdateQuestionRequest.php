@@ -9,8 +9,7 @@ class UpdateQuestionRequest extends FormRequest
 {
     public function authorize()
     {
-        $question = $this->route('question');
-        return $this->user()->can('update', $question);
+        return true;
     }
 
     public function rules()
