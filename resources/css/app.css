@@ -1,5 +1,7 @@
 @import './base/tokens.css';
 @import './components/surfaces.css';
+@import './components/utilities.css';
+@import './components/backgrounds.css';
 @import './themes/admin-shell.css';
 @import './themes/student-shell.css';
 @import './pages/student/ai-analysis.css';

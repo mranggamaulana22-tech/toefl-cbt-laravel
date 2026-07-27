@@ -72,12 +72,38 @@ class QuestionController extends Controller
         return redirect()->route('questions.index')->with('success', 'Soal TOEFL Berhasil Ditambahkan!');
     }
 
-    public function edit(Question $question): View
+    /**
+     * Menampilkan detail soal.
+     * Jika diakses via AJAX (dari modal "Lihat"), kembalikan HTML partial saja.
+     * Jika diakses langsung via URL, tetap render halaman penuh (fallback aman).
+     */
+    public function show(Request $request, Question $question)
     {
-        return view('admin.questions.edit', compact('question'));
+        return response()->json([
+            'html' => view('admin.questions.partials.show-detail', compact('question'))->render(),
+        ]);
     }
 
-    public function update(UpdateQuestionRequest $request, Question $question): RedirectResponse
+    /**
+     * Menampilkan form edit.
+     * Jika diakses via AJAX (dari modal "Edit"), kembalikan HTML form saja.
+     * Jika diakses langsung via URL, tetap render halaman penuh (fallback aman).
+     */
+    public function edit(Request $request, Question $question)
+    {
+        $rowNo = $request->query('row_no', $question->id);
+
+        return response()->json([
+            'html' => view('admin.questions.partials.edit-form', compact('question', 'rowNo'))->render(),
+        ]);
+    }
+
+    /**
+     * Update soal.
+     * Jika request AJAX (dari modal), balas JSON berisi HTML baris tabel yang sudah diperbarui.
+     * Jika request biasa, tetap redirect seperti semula.
+     */
+    public function update(UpdateQuestionRequest $request, Question $question)
     {
         $data = $request->only([
             'category',
@@ -101,7 +127,15 @@ class QuestionController extends Controller
 
         $this->questionRepo->update($question->id, $data);
 
-        return redirect()->route('questions.index')->with('success', 'Soal TOEFL berhasil diperbarui.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Soal TOEFL berhasil diperbarui.',
+            'row_html' => view('admin.questions.partials.row', [
+                'q' => $question->fresh(),
+                'no' => $request->input('_row_no'),
+            ])->render(),
+            'question_id' => $question->id,
+        ]);
     }
 
     public function destroy(Question $question): RedirectResponse

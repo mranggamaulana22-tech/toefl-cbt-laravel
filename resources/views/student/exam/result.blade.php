@@ -2,18 +2,15 @@
     <template x-if="$store.bg.enabled">
         <div class="hidden sm:block w-full h-full absolute inset-0 z-0"
             :style="$store.theme?.isDark
-                ? 'background-image: url(\\'{{ asset('images/classroom_dark.png') }}\\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:0.6;'
-                : 'background-image: url(\\'{{ asset('images/classroom_light.png') }}\\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:1;'"></div>
+                ? 'background-image: url(\'{{ asset('images/classroom_dark.webp') }}\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:0.6;'
+                : 'background-image: url(\'{{ asset('images/classroom_light.webp') }}\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:1;'"></div>
     </template>
     <div x-show="!$store.bg.enabled" :class="$store.theme?.isDark ? 'bg-[#0b0d13]' : 'bg-white'" class="absolute inset-0 w-full h-full transition-colors duration-500 z-0"></div>
     
-    <div class="py-8 relative z-10 w-full" x-data="{ loaded: false, init() { setTimeout(() => { this.loaded = true }, 350) } }">
+    <div class="py-8 relative z-10 w-full">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            @include('student.exam.partials.result-skeleton')
-
             {{-- MAIN CARD: Glassmorphism --}}
-            <div x-cloak x-show="loaded" 
-                 class="overflow-hidden rounded-3xl border shadow-[0_18px_50px_rgba(0,0,0,0.3)] backdrop-blur-xl transition-colors duration-500"
+            <div class="overflow-hidden rounded-3xl border shadow-[0_18px_50px_rgba(0,0,0,0.3)] backdrop-blur-xl transition-colors duration-500"
                  :class="$store.theme?.isDark ? 'bg-[#0f172a]/95 border-white/10' : 'bg-white/95 border-slate-200'">
                 
                 {{-- HEADER GRADIENT --}}
@@ -64,7 +61,6 @@
                                     <a href="{{ route('dashboard') }}" class="inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-bold text-indigo-700 transition hover:bg-indigo-50 hover:scale-[1.02] active:scale-95 shadow-lg">
                                         Kembali ke Dashboard
                                     </a>
-                                    {{-- PERBAIKAN: Tombol Cetak Sertifikat diubah menjadi navigasi ke halaman Riwayat --}}
                                     <a href="{{ route('student.results.index') }}" class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/20 hover:scale-[1.02] active:scale-95">
                                         <i class="fas fa-print mr-2"></i> Cetak Sertifikat
                                     </a>

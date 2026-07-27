@@ -19,6 +19,7 @@ class Result extends Model
         'correct_structure',
         'correct_reading',
         'score_total',
+        'certificate_path',
         'submitted_at',
         'ai_suggestion',
         'ai_generated_at',
@@ -45,33 +46,21 @@ class Result extends Model
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Scope: Filter to submitted results only
-     */
     public function scopeSubmitted(Builder $query): Builder
     {
         return $query->whereNotNull('submitted_at');
     }
 
-    /**
-     * Scope: Filter to specific user
-     */
     public function scopeForUser(Builder $query, int $userId): Builder
     {
         return $query->where('user_id', $userId);
     }
 
-    /**
-     * Scope: Get latest submitted result
-     */
     public function scopeLatestSubmitted(Builder $query): Builder
     {
         return $query->submitted()->latest('submitted_at');
     }
 
-    /**
-     * Scope: Filter by exam cycle
-     */
     public function scopeByCycle(Builder $query, int $cycle): Builder
     {
         return $query->where('exam_cycle', $cycle);

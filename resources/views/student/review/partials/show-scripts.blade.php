@@ -1,7 +1,6 @@
 <script>
     function practiceReviewPage() {
         return {
-            loaded: false,
             selectedItemId: {{ $items->first()?->id ?? 0 }},
             loadingId: null,
             reviewCache: {},
@@ -103,15 +102,12 @@
                 }
             },
             init() {
-                setTimeout(() => {
-                    this.loaded = true;
-                    if (this.selectedItemId) {
-                        this.activeQuestion = this.items.findIndex(item => item.id === this.selectedItemId);
-                        this.selectItem(this.selectedItemId);
-                    } else {
-                        this.activeQuestion = 0;
-                    }
-                }, 350);
+                if (this.selectedItemId) {
+                    this.activeQuestion = this.items.findIndex(item => item.id === this.selectedItemId);
+                    this.selectItem(this.selectedItemId);
+                } else {
+                    this.activeQuestion = 0;
+                }
             },
         };
     }

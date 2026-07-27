@@ -39,7 +39,10 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/practice-history', [PracticeHistoryController::class, 'index'])->name('practice-history.index');
     Route::get('/admin/gradebook', [GradebookController::class, 'index'])->name('gradebook.index');
     Route::get('/admin/gradebook/export/csv', [GradebookController::class, 'exportCsv'])->name('gradebook.export.csv');
+    
+    // Student Management Routes
     Route::get('/admin/students', [StudentController::class, 'index'])->name('students.index');
+    Route::put('/admin/students/{student}', [StudentController::class, 'update'])->name('students.update'); // Route Baru untuk Update & Reset Password
     Route::delete('/admin/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
 });
 
@@ -65,6 +68,7 @@ Route::middleware(['auth', 'verified', 'student'])->group(function () {
     Route::get('/student/results/exams', [ResultController::class, 'examHistory'])->name('student.results.exams');
     Route::get('/student/results/practices', [ResultController::class, 'practiceHistory'])->name('student.results.practices');
     Route::get('/student/results/{result}/certificate', [ResultController::class, 'certificate'])->name('student.results.certificate');
+    Route::get('/student/results/{result}/certificate/download', [ResultController::class, 'downloadCertificate'])->name('student.results.certificate.download');
 });
 
 Route::middleware('auth')->group(function () {

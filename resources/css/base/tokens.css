@@ -19,3 +19,55 @@
 html.dark {
     color-scheme: dark;
 }
+
+/*
+    Anti-flash / anti-blink putih saat reload.
+
+    Body warna background sebelumnya HANYA diatur lewat Alpine (:class di app.blade.php),
+    yang baru aktif setelah Alpine selesai load. Jeda singkat sebelum itu membuat body
+    tampil putih default browser dulu, baru berubah gelap -> kelihatan "kedip".
+
+    Aturan CSS murni di bawah ini jalan instan saat HTML pertama kali di-parse,
+    berdasarkan class `html.dark` yang sudah di-set duluan oleh script kecil
+    di <head> (sebelum Alpine load sama sekali). Jadi warna background sudah
+    benar sejak frame pertama, tidak perlu menunggu JS apapun.
+*/
+body {
+    background-color: var(--piksi-gray-bg);
+    color: var(--piksi-text);
+}
+
+html.dark body {
+    background-color: #0b0d13;
+    color: #fff;
+}
+
+/*
+    Anti-flash untuk elemen FORM (input, select, textarea).
+
+    Sama seperti body: warna gelap elemen form (search bar, dropdown, dll)
+    sepenuhnya bergantung pada :class Alpine, dan class statisnya TIDAK punya
+    warna background sama sekali. Pola ini terulang di banyak file (gradebook,
+    students, practice-history, form-field component, dst) - bukan 1 file saja.
+
+    Daripada memperbaiki satu-satu di setiap file, aturan CSS murni di sini
+    memberi warna default yang benar sejak render pertama (berdasarkan class
+    html.dark yang sudah di-set instan oleh script kecil di <head>).
+    Class dinamis Tailwind dari Alpine (pakai prefix "!") tetap akan override
+    begini setelah Alpine siap, jadi tidak ada konflik - ini murni menutup
+    celah sebelum Alpine load.
+*/
+html.dark input:not([type="checkbox"]):not([type="radio"]),
+html.dark select,
+html.dark textarea {
+    background-color: #1e293b;
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+html:not(.dark) input:not([type="checkbox"]):not([type="radio"]),
+html:not(.dark) select,
+html:not(.dark) textarea {
+    background-color: #fff;
+    color: #0f172a;
+}

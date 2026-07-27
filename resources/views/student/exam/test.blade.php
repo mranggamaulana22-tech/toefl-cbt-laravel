@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="min-h-screen text-white font-sans selection:bg-purple-500/30 relative overflow-hidden" 
-         x-data="examSession()" x-init="initExam()">
+         x-data="examSession(window.examConfig)" x-init="initExam()">
 
         {{-- ===== BACKGROUND SYSTEM ===== --}}
         <div x-show="$store.bg.enabled" class="ai-bg-img absolute inset-0 w-full h-full z-0"></div>
@@ -23,7 +23,9 @@
 
         </div>
 
-        {{-- ===== JAVASCRIPT LOGIC & STYLES ===== --}}
-        @include('student.exam.partials.exam-scripts')
-        @include('student.exam.partials.exam-styles')
+    </div>
+
+    {{-- ===== JAVASCRIPT LOGIC & STYLES ===== --}}
+    @include('student.exam.partials.exam-scripts')
+    @include('student.exam.partials.exam-styles')
 </x-app-layout>

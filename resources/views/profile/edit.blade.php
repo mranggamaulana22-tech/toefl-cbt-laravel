@@ -1,5 +1,4 @@
 <x-app-layout>
-    @include('student.partials.shared-utils-styles')
     @php
         $isStudent = auth()->user()->role === 'student';
     @endphp
@@ -46,12 +45,12 @@
         @if($isStudent)
         .profile-bg-img {
             position: fixed; inset: 0; z-index: 0; width: 100vw; height: 100vh;
-            background-image: url('{{ asset('images/classroom_light.png') }}');
+            background-image: url('{{ asset('images/classroom_light.webp') }}');
             background-size: cover; background-position: center; background-repeat: no-repeat;
             background-attachment: scroll; opacity: 0.95; transition: opacity 0.5s;
         }
         .dark .profile-bg-img {
-            background-image: url('{{ asset('images/classroom_dark.png') }}');
+            background-image: url('{{ asset('images/classroom_dark.webp') }}');
             opacity: 0.7;
         }
         .profile-bg-gradient {

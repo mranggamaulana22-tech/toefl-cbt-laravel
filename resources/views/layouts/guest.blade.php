@@ -46,7 +46,7 @@
             {{-- LAPISAN BACKGROUND: Dibuat jernih agar gedung terlihat jelas --}}
             <div class="absolute inset-0 z-0">
                 {{-- Gambar Gedung --}}
-                <img src="{{ asset('images/gedung.jpg') }}" alt="Background" class="h-full w-full object-cover transition-opacity duration-700"
+                <img src="{{ asset('images/gedung.webp') }}" alt="Background" class="h-full w-full object-cover transition-opacity duration-700"
                      width="1200" height="800"
                      loading="lazy"
                      :class="$store.theme?.isDark ? 'opacity-40' : 'opacity-70'">

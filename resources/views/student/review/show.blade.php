@@ -4,10 +4,8 @@
     <div class="review-page py-6 min-h-screen relative overflow-hidden" x-data="practiceReviewPage()" x-init="init()">
         
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-            
-            @include('student.review.partials.show-skeleton')
 
-            <div x-cloak x-show="loaded" class="space-y-6">
+            <div class="space-y-6">
                 <div class="sm:hidden rounded-xl border border-slate-200 bg-white p-3 shadow-sm">
                     <div class="flex items-center justify-between gap-2">
                         <div class="min-w-0">

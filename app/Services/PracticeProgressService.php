@@ -26,8 +26,11 @@ class PracticeProgressService
         $savedQuestionIds = array_map('intval', $progress->question_ids ?? []);
         $normalizedCurrentIds = array_map('intval', $currentQuestionIds);
 
-        // If question set changed, invalidate saved progress
-        if ($savedQuestionIds !== $normalizedCurrentIds) {
+        // If question set changed, invalidate saved progress.
+        // Bandingkan sebagai SET (isi), bukan urutan — karena urutan soal bisa
+        // berbeda antara session dan payload (mis. akibat shuffle di client),
+        // padahal soalnya tetap sama.
+        if (!$this->sameQuestionSet($savedQuestionIds, $normalizedCurrentIds)) {
             $progress->delete();
             return null;
         }
@@ -50,8 +53,8 @@ class PracticeProgressService
         $savedQuestionIds = array_map('intval', $validated['question_ids']);
         $normalizedCurrentIds = array_map('intval', $currentQuestionIds);
 
-        // Verify question IDs match current session
-        if ($savedQuestionIds !== $normalizedCurrentIds) {
+        // Verify question IDs match current session (sebagai SET, bukan urutan persis).
+        if (!$this->sameQuestionSet($savedQuestionIds, $normalizedCurrentIds)) {
             return false;
         }
 
@@ -75,5 +78,22 @@ class PracticeProgressService
     public function clearProgress(Request $request): void
     {
         PracticeProgress::where('user_id', $request->user()->id)->delete();
+    }
+
+    /**
+     * Bandingkan dua daftar ID soal sebagai SET (isi sama), tanpa peduli urutan.
+     *
+     * PENTING: jangan pakai `$a !== $b` untuk membandingkan array di sini —
+     * operator itu di PHP juga membandingkan URUTAN elemen, sehingga
+     * [1,2,3] dianggap BEDA dari [3,2,1] walau isinya identik. Ini bug lama
+     * yang bikin progress selalu invalid tiap kali urutan soal berbeda
+     * antara session dan payload.
+     */
+    private function sameQuestionSet(array $a, array $b): bool
+    {
+        sort($a);
+        sort($b);
+
+        return $a === $b;
     }
 }

@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="min-h-screen text-white font-sans selection:bg-purple-500/30 relative overflow-hidden" x-data="practiceSession()" x-init="initExam()">
+    <div class="min-h-screen text-white font-sans selection:bg-purple-500/30 relative overflow-hidden" x-data="practiceSession(window.practiceConfig)" x-init="initExam()">
 
         {{-- ===== BACKGROUND SYSTEM ===== --}}
         <div x-show="$store.bg.enabled" class="ai-bg-img absolute inset-0 w-full h-full z-0"></div>

@@ -217,7 +217,7 @@
                 
                 <div class="flex items-center gap-3">
                     <div class="relative">
-                        <img src="{{ asset('images/logo.png') }}"
+                        <img src="{{ asset('images/logo.webp') }}"
                              alt="Logo Politeknik Piksi Ganesha"
                              width="44" height="44"
                              loading="lazy"
@@ -348,7 +348,7 @@
 
                     {{-- Gedung photo with float --}}
                     <div class="relative h-56 overflow-hidden border-b sm:h-64 lg:h-56" :class="$store.theme?.isDark ? 'border-white/5' : 'border-slate-100'">
-                        <img src="{{ asset('images/gedung.jpg') }}"
+                        <img src="{{ asset('images/gedung.webp') }}"
                              alt="Gedung Politeknik Piksi Ganesha"
                              width="1200" height="800"
                              loading="lazy"

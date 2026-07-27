@@ -1,7 +1,7 @@
 {{-- MODAL STREAK (POPUP) --}}
 @if(session('show_streak_modal'))
-<div x-data="{ open: true }" 
-     x-init="setTimeout(() => open = true, 500)"
+<div x-data="{ open: false }" 
+     x-init="$nextTick(() => open = true)"
      x-show="open" 
      x-cloak
      class="fixed inset-0 z-[99] flex items-center justify-center p-4 overflow-hidden">

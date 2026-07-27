@@ -17,6 +17,7 @@ class ExamFlowService
     public function __construct(
         private QuestionSelectionService $questionSelectionService,
         private ScoringService $scoringService,
+        private CertificateService $certificateService,
     ) {
     }
 
@@ -97,7 +98,7 @@ class ExamFlowService
     {
         $setting = ExamSetting::current();
 
-        return DB::transaction(function () use ($userId, $setting, $userAnswers) {
+        $submission = DB::transaction(function () use ($userId, $setting, $userAnswers) {
             User::whereKey($userId)->lockForUpdate()->first();
 
             if (!$setting->is_open) {
@@ -168,5 +169,17 @@ class ExamFlowService
                 'cycle' => (int) $setting->current_cycle,
             ];
         });
+
+        // Generate sertifikat PDF di luar transaction (proses I/O ke disk,
+        // tidak perlu ikut lock transaksi DB). Kalau generate gagal,
+        // kegagalan ini TIDAK membatalkan submission — siswa tetap dapat
+        // skornya, sertifikat bisa di-generate ulang nanti saat diakses.
+        try {
+            $this->certificateService->ensureGenerated($submission['result']);
+        } catch (\Throwable $e) {
+            report($e);
+        }
+
+        return $submission;
     }
 }

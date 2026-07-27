@@ -1,38 +1,17 @@
 <x-app-layout>
-    @include('student.partials.shared-utils-styles')
     <template x-if="$store.bg.enabled">
         <div class="w-full h-full absolute inset-0 z-0"
             :style="$store.theme?.isDark
-                ? 'background-image: url(\'{{ asset('images/classroom_dark.png') }}\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:0.6;'
-                : 'background-image: url(\'{{ asset('images/classroom_light.png') }}\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:1;'"></div>
+                ? 'background-image: url(\'{{ asset('images/classroom_dark.webp') }}\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:0.6;'
+                : 'background-image: url(\'{{ asset('images/classroom_light.webp') }}\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:1;'"></div>
     </template>
     <div x-show="!$store.bg.enabled" :class="$store.theme?.isDark ? 'bg-[#0b0d13]' : 'bg-white'" class="absolute inset-0 w-full h-full transition-colors duration-500 z-0"></div>
 
-
-    {{-- Page transition styles --}}
     <style>
-        /* ─── Page-in animation ─────────────────────────────────────── */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to   { opacity: 1; }
-        }
-
-        /* ─── Page-out / navigate-away transition ───────────────────── */
-        @keyframes fadeOutDown {
-            from { opacity: 1; transform: translateY(0); }
-            to   { opacity: 0; transform: translateY(20px); }
-        }
-
-        /* Applied to the wrapper element */
-        .page-enter {
-            animation: fadeIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
-        }
-        .page-exit {
-            animation: fadeOutDown 0.35s cubic-bezier(0.4, 0, 1, 1) both;
-            pointer-events: none;
-        }
-
-        /* Staggered children */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOutDown { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(20px); } }
+        .page-enter { animation: fadeIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        .page-exit { animation: fadeOutDown 0.35s cubic-bezier(0.4, 0, 1, 1) both; pointer-events: none; }
         .anim-chip   { animation: fadeInUp 0.5s 0.05s cubic-bezier(0.22, 1, 0.36, 1) both; }
         .anim-title  { animation: fadeInUp 0.55s 0.12s cubic-bezier(0.22, 1, 0.36, 1) both; }
         .anim-desc   { animation: fadeInUp 0.55s 0.18s cubic-bezier(0.22, 1, 0.36, 1) both; }
@@ -40,42 +19,25 @@
         .anim-rules  { animation: fadeInUp 0.55s 0.30s cubic-bezier(0.22, 1, 0.36, 1) both; }
         .anim-card   { animation: scaleIn 0.60s 0.20s cubic-bezier(0.22, 1, 0.36, 1) both; }
         .anim-alert  { animation: fadeInUp 0.45s 0.38s cubic-bezier(0.22, 1, 0.36, 1) both; }
-
-        /* Smooth ambient glow pulse */
-        @keyframes glowPulse {
-            0%, 100% { opacity: 0.10; }
-            50%       { opacity: 0.18; }
-        }
+        @keyframes glowPulse { 0%, 100% { opacity: 0.10; } 50% { opacity: 0.18; } }
         .glow-ambient { animation: glowPulse 6s ease-in-out infinite; }
-
-        /* Button micro-interaction */
-        .btn-start {
-            transition: background-color 0.2s ease, transform 0.18s ease, box-shadow 0.2s ease;
-        }
-        .btn-start:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 28px rgba(30, 64, 175, 0.30);
-        }
+        .btn-start { transition: background-color 0.2s ease, transform 0.18s ease, box-shadow 0.2s ease; }
+        .btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(30, 64, 175, 0.30); }
         .btn-start:active { transform: translateY(0); }
-
-        /* Navigation link – catch all <a> exits */
-        a[data-transition], button[data-transition] {
-            /* handled via JS */
-        }
     </style>
 
     <div
         id="page-root"
         class="min-h-screen text-white font-sans selection:bg-purple-500/30 overflow-hidden page-enter"
-        x-data="{ loaded: false, init() { setTimeout(() => { this.loaded = true }, 350) } }"
+        x-data="{}"
+        x-init="$store.bg.enabled = true"
     >
-        <!-- BACKGROUND -->
         <div class="fixed inset-0 z-0">
             <template x-if="$store.bg.enabled">
                 <div class="w-full h-full absolute inset-0"
                     :style="$store.theme?.isDark
-                        ? 'background-image: url(\'{{ asset('images/classroom_dark.png') }}\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:0.6;'
-                        : 'background-image: url(\'{{ asset('images/classroom_light.png') }}\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:1;'"></div>
+                        ? 'background-image: url(\'{{ asset('images/classroom_dark.webp') }}\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:0.6;'
+                        : 'background-image: url(\'{{ asset('images/classroom_light.webp') }}\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:1;'"></div>
             </template>
             <div x-show="$store.bg.enabled" class="absolute inset-0 transition-all duration-700"
                 :class="$store.theme?.isDark
@@ -85,20 +47,14 @@
             <div x-show="!$store.bg.enabled" :class="$store.theme?.isDark ? 'bg-[#0b0d13]' : 'bg-white'" class="absolute inset-0 w-full h-full transition-colors duration-500"></div>
         </div>
 
-        <!-- AMBIENT GLOW -->
         <div class="glow-ambient fixed top-0 right-0 w-[500px] h-[500px] bg-indigo-600/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
         <div class="glow-ambient fixed bottom-0 left-0 w-[300px] h-[300px] bg-purple-600/10 blur-[100px] rounded-full pointer-events-none z-0" style="animation-delay:3s"></div>
 
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-10 md:pt-16 lg:pt-20">
 
-            {{-- ── Skeleton (loading state) ──────────────────────── --}}
-            @include('student.exam.partials.start-skeleton')
-
-            {{-- ── Main card ─────────────────────────────────────── --}}
-            <div x-cloak x-show="loaded" class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
+            <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
                 <div class="grid gap-6 p-6 md:p-8 lg:grid-cols-[1.4fr_0.9fr] lg:items-start">
 
-                    {{-- Left column --}}
                     <div>
                         <span class="anim-chip inline-flex items-center rounded-full border border-indigo-100 bg-indigo-50 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-indigo-700">
                             Persiapan CBT
@@ -131,7 +87,6 @@
                         </div>
                     </div>
 
-                    {{-- Right column – status card --}}
                     <div class="anim-card rounded-3xl border border-indigo-300 bg-gradient-to-br from-indigo-700 via-indigo-600 to-sky-600 p-6 text-white shadow-[0_16px_40px_rgba(30,64,175,0.30)]">
                         <p class="text-xs font-bold uppercase tracking-[0.22em] text-violet-100">Status Sesi</p>
                         <h4 class="mt-2 text-2xl font-black text-white">
@@ -176,7 +131,6 @@
                     </div>
                 </div>
 
-                {{-- Flash messages --}}
                 @if (session('error'))
                     <div class="anim-alert mx-6 mb-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 md:mx-8">
                         {{ session('error') }}
@@ -192,17 +146,10 @@
         </div>
     </div>
 
-    {{-- ── Page transition script ─────────────────────────────────── --}}
     <script>
     (function () {
         const root = document.getElementById('page-root');
 
-        /**
-         * Intercept any link that:
-         *  - has [data-transition], OR
-         *  - is a same-origin, same-page-type link (not anchor, not target="_blank")
-         * Play exit animation, then navigate.
-         */
         function triggerExit(href, delay = 320) {
             if (!root) return;
             root.classList.remove('page-enter');
@@ -210,7 +157,6 @@
             setTimeout(() => { window.location.href = href; }, delay);
         }
 
-        // 1. Explicit [data-transition] links
         document.addEventListener('click', function (e) {
             const link = e.target.closest('a[data-transition]');
             if (!link) return;
@@ -223,7 +169,6 @@
             triggerExit(href);
         });
 
-        // 2. Browser back/forward — fade in fresh
         window.addEventListener('pageshow', function (ev) {
             if (ev.persisted && root) {
                 root.classList.remove('page-exit');

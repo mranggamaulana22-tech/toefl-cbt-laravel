@@ -1,7 +1,5 @@
 {{-- resources/views/student/ai-analysis/partials/styles.blade.php --}}
 @push('styles')
-    @include('student.partials.shared-bg-styles')
-    @include('student.partials.shared-utils-styles')
     <style>
         :root {
             --ai-bg-main: #f5f6fa;

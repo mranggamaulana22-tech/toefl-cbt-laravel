@@ -15,7 +15,8 @@ class UpdateStreakMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->check()) {
+        // Streak cuma relevan untuk siswa — jangan ikut track akun admin.
+        if (auth()->check() && auth()->user()->role === 'student') {
             $user = auth()->user();
             $isIncreased = $user->updateStreak();
 

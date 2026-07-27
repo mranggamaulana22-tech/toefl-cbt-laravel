@@ -38,10 +38,11 @@
         @stack('styles')
     </head>
 
-    {{-- 2. HAPUS style="background-color:#fff;" agar tidak memaksa putih --}}
-    <body class="font-sans antialiased transition-colors duration-300 overflow-x-hidden {{ $isStudentShell ? 'student-theme' : '' }} {{ $isAdminShell ? 'admin-theme' : '' }} min-h-screen" 
-          :class="$store.theme?.isDark ? 'bg-[#0b0d13] text-white' : 'bg-white text-slate-900'">
-        
+    {{-- 2. Warna body sekarang murni CSS (lihat tokens.css) + dark: Tailwind, tidak lagi menunggu Alpine --}}
+    <body class="font-sans antialiased transition-colors duration-300 overflow-x-hidden {{ $isStudentShell ? 'student-theme' : '' }} {{ $isAdminShell ? 'admin-theme' : '' }} min-h-screen
+                 bg-white text-slate-900
+                 dark:bg-[#0b0d13] dark:text-white">
+
         <script>
             document.addEventListener('alpine:init', () => {
                 if (!window.Alpine.store('bg')) {
@@ -63,9 +64,10 @@
 
             <div class="min-h-screen">
                 @if (isset($header))
-                    {{-- 3. Header juga harus adaptif warnanya --}}
-                    <header :class="$store.theme?.isDark ? 'bg-[#111827]/80 border-white/5' : 'bg-white/80 border-slate-200/80'" 
-                            class="backdrop-blur-xl border-b shadow-[0_8px_30px_rgba(15,23,42,0.03)]">
+                    {{-- 3. Header sekarang pakai dark: Tailwind, tidak menunggu Alpine load --}}
+                    <header class="backdrop-blur-xl border-b shadow-[0_8px_30px_rgba(15,23,42,0.03)]
+                                   bg-white/80 border-slate-200/80
+                                   dark:bg-[#111827]/80 dark:border-white/5">
                         <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                             {{ $header }}
                         </div>
@@ -78,18 +80,20 @@
             </div>
         </div>
 
-        {{-- 4. Modal Logout juga harus gelap di mode gelap --}}
+        {{-- 4. Modal Logout — dark: Tailwind, hanya render saat modal dibuka jadi risiko flash kecil,
+             tapi tetap dikonsistenkan --}}
         <x-modal name="confirm-logout" maxWidth="md">
-            <div class="p-6 transition-colors" :class="$store.theme?.isDark ? 'bg-[#111827]' : 'bg-white'">
-                <h2 class="text-lg font-semibold" :class="$store.theme?.isDark ? 'text-white' : 'text-slate-900'">Konfirmasi Logout</h2>
-                <p class="mt-2 text-sm leading-6" :class="$store.theme?.isDark ? 'text-slate-400' : 'text-slate-600'">
+            <div class="p-6 transition-colors bg-white dark:bg-[#111827]">
+                <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Konfirmasi Logout</h2>
+                <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
                     Anda akan keluar dari akun ini. Lanjutkan hanya jika memang ingin mengakhiri sesi saat ini.
                 </p>
 
                 <div class="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
-                    <button type="button" x-on:click="$dispatch('close-modal', 'confirm-logout')" 
-                            :class="$store.theme?.isDark ? 'bg-white/5 text-white border-white/10 hover:bg-white/10' : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300'"
-                            class="inline-flex items-center justify-center rounded-xl border px-4 py-2 text-sm font-semibold transition">
+                    <button type="button" x-on:click="$dispatch('close-modal', 'confirm-logout')"
+                            class="inline-flex items-center justify-center rounded-xl border px-4 py-2 text-sm font-semibold transition
+                                   bg-white text-slate-700 border-slate-200 hover:border-slate-300
+                                   dark:bg-white/5 dark:text-white dark:border-white/10 dark:hover:bg-white/10">
                         Batal
                     </button>
 

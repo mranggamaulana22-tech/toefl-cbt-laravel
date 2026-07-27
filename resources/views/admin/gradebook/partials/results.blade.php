@@ -1,8 +1,9 @@
 <div class="p-6 overflow-x-auto">
     <table class="w-full text-left border-collapse text-sm">
         <thead>
-            <tr :class="$store.theme?.isDark ? 'bg-white/5 text-slate-400 border-white/5' : 'bg-gray-50 text-gray-600'" 
-                class="uppercase text-[10px] font-black tracking-widest border-b">
+            <tr class="uppercase text-[10px] font-black tracking-widest border-b
+                       bg-gray-50 text-gray-600
+                       dark:bg-white/5 dark:text-slate-400 dark:border-white/5">
                 <th class="py-3 px-4">Tanggal</th>
                 <th class="py-3 px-4">Nama</th>
                 <th class="py-3 px-4">NPM</th>
@@ -21,21 +22,22 @@
         </tbody>
 
         {{-- DATA ASLI: Muncul saat isLoading false --}}
-        <tbody x-show="!isLoading" :class="$store.theme?.isDark ? 'text-slate-300' : 'text-gray-700'">
+        <tbody x-show="!isLoading" class="text-gray-700 dark:text-slate-300">
             @forelse($results as $row)
-            <tr class="border-b transition-colors group" 
-                :class="$store.theme?.isDark ? 'border-white/5 hover:bg-white/[0.02]' : 'border-gray-100 hover:bg-gray-50'">
-                <td class="py-3 px-4" :class="$store.theme?.isDark ? 'text-slate-500' : 'text-gray-500'">
+            <tr class="border-b transition-colors group
+                       border-gray-100 hover:bg-gray-50
+                       dark:border-white/5 dark:hover:bg-white/[0.02]">
+                <td class="py-3 px-4 text-gray-500 dark:text-slate-500">
                     {{ $row->created_at->format('d M Y H:i') }}
                 </td>
-                <td class="py-3 px-4 font-semibold group-hover:text-indigo-500 transition-colors" :class="$store.theme?.isDark ? 'text-white' : 'text-slate-900'">
+                <td class="py-3 px-4 font-semibold group-hover:text-indigo-500 transition-colors text-slate-900 dark:text-white">
                     {{ $row->user->name ?? '-' }}
                 </td>
                 <td class="py-3 px-4">{{ $row->user->npm ?? '-' }}</td>
                 <td class="py-3 px-4 text-center font-medium">{{ $row->correct_listening }}</td>
                 <td class="py-3 px-4 text-center font-medium">{{ $row->correct_structure }}</td>
                 <td class="py-3 px-4 text-center font-medium">{{ $row->correct_reading }}</td>
-                <td class="py-3 px-4 text-center font-black" :class="$store.theme?.isDark ? 'text-indigo-400' : 'text-indigo-700'">
+                <td class="py-3 px-4 text-center font-black text-indigo-700 dark:text-indigo-400">
                     {{ $row->score_total }}
                 </td>
             </tr>

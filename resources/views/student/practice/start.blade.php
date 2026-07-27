@@ -1,5 +1,4 @@
 <x-app-layout>
-    @include('student.partials.shared-utils-styles')
     <style>
         /* ─── Page-in animation ─────────────────────────────────────── */
         @keyframes fadeIn {
@@ -51,16 +50,16 @@
     <div
         id="page-root"
         class="min-h-screen text-white font-sans selection:bg-purple-500/30 overflow-hidden page-enter"
-        {{-- TAMBAHKAN TRIGGER BACKGROUND DI SINI --}}
-        x-data="{ loaded: false, init() { $store.bg.enabled = true; setTimeout(() => { this.loaded = true }, 350) } }"
+        x-data="{}"
+        x-init="$store.bg.enabled = true"
     >
         <!-- BACKGROUND -->
         <div class="fixed inset-0 z-0">
             <template x-if="$store.bg.enabled">
                 <div class="w-full h-full absolute inset-0"
                     :style="$store.theme?.isDark
-                        ? 'background-image: url(\'{{ asset('images/classroom_dark.png') }}\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:0.6;'
-                        : 'background-image: url(\'{{ asset('images/classroom_light.png') }}\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:1;'"></div>
+                        ? 'background-image: url(\'{{ asset('images/classroom_dark.webp') }}\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:0.6;'
+                        : 'background-image: url(\'{{ asset('images/classroom_light.webp') }}\'); background-size: cover; background-position: center; background-repeat: no-repeat; background-attachment: scroll; opacity:1;'"></div>
             </template>
             <div x-show="$store.bg.enabled" class="absolute inset-0 transition-all duration-700"
                 :class="$store.theme?.isDark
@@ -76,11 +75,8 @@
 
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-10 md:pt-16 lg:pt-20">
 
-            {{-- ── Skeleton ──────────────────────────────────────────── --}}
-            @include('student.practice.partials.start-skeleton')
-
             {{-- ── Main card ─────────────────────────────────────────── --}}
-            <div x-cloak x-show="loaded" class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
+            <div class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
                 <div class="grid gap-6 p-6 md:p-8 lg:grid-cols-[1.4fr_0.9fr] lg:items-start">
 
                     {{-- Left column --}}

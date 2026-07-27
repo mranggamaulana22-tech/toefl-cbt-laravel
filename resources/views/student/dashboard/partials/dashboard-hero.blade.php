@@ -16,7 +16,7 @@
          x-transition:enter-end="opacity-100 translate-y-0 scale-100">
         <div class="w-[300px] h-[300px] lg:w-[600px] lg:h-[600px] bg-purple-600/10 rounded-full blur-[100px] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
         
-        <img src="{{ asset('images/mascot.png') }}" 
+        <img src="{{ asset('images/mascot.webp') }}" 
              :class="$store.theme?.isDark 
                  ? 'max-w-full w-auto sm:h-[350px] lg:h-[580px] object-contain object-bottom relative translate-y-10 lg:translate-x-40 drop-shadow-[0_20px_60px_rgba(0,0,0,0.8)]' 
                  : 'max-w-full w-auto sm:h-[350px] lg:h-[580px] object-contain object-bottom relative translate-y-10 lg:translate-x-40 drop-shadow-[0_16px_32px_rgba(40,40,40,0.32)]'"

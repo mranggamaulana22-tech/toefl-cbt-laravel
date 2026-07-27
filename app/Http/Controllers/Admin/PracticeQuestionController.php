@@ -69,16 +69,36 @@ class PracticeQuestionController extends Controller
             ->with('success', 'Soal latihan berhasil ditambahkan.');
     }
 
-    public function show(PracticeQuestion $practiceQuestion)
+    /**
+     * Menampilkan detail soal.
+     * Jika diakses via AJAX (dari modal "Lihat"), kembalikan HTML partial saja.
+     * Jika diakses langsung via URL, tetap render halaman penuh seperti biasa.
+     */
+    public function show(Request $request, PracticeQuestion $practiceQuestion)
     {
-        return view('admin.practice-questions.show', compact('practiceQuestion'));
+        return response()->json([
+            'html' => view('admin.practice-questions.partials.show-detail', compact('practiceQuestion'))->render(),
+        ]);
     }
 
-    public function edit(PracticeQuestion $practiceQuestion)
+    /**
+     * Menampilkan form edit.
+     * Jika diakses via AJAX (dari modal "Edit"), kembalikan HTML form saja.
+     * Jika diakses langsung via URL, tetap render halaman penuh seperti biasa (fallback aman).
+     */
+    public function edit(Request $request, PracticeQuestion $practiceQuestion)
     {
-        return view('admin.practice-questions.edit', compact('practiceQuestion'));
+        return response()->json([
+            'html' => view('admin.practice-questions.partials.edit-form', compact('practiceQuestion'))->render(),
+        ]);
     }
 
+    /**
+     * Update soal.
+     * Jika request AJAX (dari modal), balas JSON berisi HTML baris tabel yang sudah diperbarui,
+     * supaya front-end bisa ganti baris itu saja tanpa reload halaman.
+     * Jika request biasa (form penuh diakses via URL), tetap redirect seperti semula.
+     */
     public function update(Request $request, PracticeQuestion $practiceQuestion)
     {
         $hasAudio = $request->hasFile('audio_path') || !empty($practiceQuestion->audio_path);
@@ -112,8 +132,12 @@ class PracticeQuestionController extends Controller
 
         $practiceQuestion->update($validated);
 
-        return redirect()->route('admin.practice-questions.index')
-            ->with('success', 'Soal latihan berhasil diperbarui.');
+        return response()->json([
+            'success' => true,
+            'message' => 'Soal latihan berhasil diperbarui.',
+            'row_html' => view('admin.practice-questions.partials.row', ['question' => $practiceQuestion->fresh()])->render(),
+            'question_id' => $practiceQuestion->id,
+        ]);
     }
 
     public function destroy(PracticeQuestion $practiceQuestion)

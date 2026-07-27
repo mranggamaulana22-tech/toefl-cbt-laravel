@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="min-h-screen text-white font-sans selection:bg-purple-500/30 overflow-hidden" 
-         x-data="{ loaded: false }" x-init="setTimeout(() => loaded = true, 100)">
+         x-data="{ loaded: false }" x-init="$store.bg.enabled = true; $nextTick(() => loaded = true)">
         <main class="w-full overflow-x-hidden overflow-y-auto relative min-h-screen">
 
             @include('student.dashboard.partials.dashboard-bg')

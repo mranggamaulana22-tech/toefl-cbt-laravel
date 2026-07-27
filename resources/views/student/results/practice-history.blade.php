@@ -1,5 +1,4 @@
 <x-app-layout>
-    @include('student.partials.shared-utils-styles')
     <x-slot name="header">
         <div class="flex items-center justify-between gap-3">
             <div>
@@ -14,7 +13,7 @@
         </div>
     </x-slot>
 
-    <div class="practice-history-page py-8 min-h-screen relative overflow-hidden" x-data="{ loaded: false, init() { setTimeout(() => { this.loaded = true }, 350) } }">
+    <div class="practice-history-page py-8 min-h-screen relative overflow-hidden">
         
         {{-- Background Image dihapus karena halaman ini seharusnya bersih dari background --}}
 
@@ -25,9 +24,6 @@
             50%       { transform: translateY(-18px) scale(1.04); }
         }
 
-        /* ============================================================
-           AMBIENT BACKGROUND GLOW — subtle floating motion
-           ============================================================ */
         .fixed.top-0.right-0 {
             animation: ambientFloat 9s ease-in-out infinite;
         }
@@ -35,11 +31,7 @@
             animation: ambientFloat 12s ease-in-out infinite reverse;
         }
 
-        /* ============================================================
-           STAT CARDS — staggered scale-in entrance
-           ============================================================ */
         .results-card {
-            animation: scaleIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
             transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
                         box-shadow 0.25s ease;
         }
@@ -48,34 +40,13 @@
             box-shadow: 0 16px 40px rgba(15, 23, 42, 0.10);
         }
 
-        /* Stagger delays — exam summary cards */
-        .grid:first-of-type .results-card:nth-child(1) { animation-delay: 0.10s; }
-        .grid:first-of-type .results-card:nth-child(2) { animation-delay: 0.20s; }
-        .grid:first-of-type .results-card:nth-child(3) { animation-delay: 0.30s; }
-
-        /* Stagger delays — practice summary cards */
-        .grid.pt-2 .results-card:nth-child(1) { animation-delay: 0.45s; }
-        .grid.pt-2 .results-card:nth-child(2) { animation-delay: 0.55s; }
-        .grid.pt-2 .results-card:nth-child(3) { animation-delay: 0.65s; }
-
-        /* Big number pop-in */
-        .results-card .text-3xl {
-            animation: countUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-            animation-delay: inherit;
-        }
-
-        /* ============================================================
-           PANELS — fade + slide up entrance
-           ============================================================ */
         .results-panel {
-            animation: fadeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
             transition: box-shadow 0.35s ease;
         }
         .results-panel:hover {
-            box-shadow: 0 0 32px 6px rgba(99, 102, 241, 0.10), 0 18px_50px rgba(15,23,42,0.08);
+            box-shadow: 0 0 32px 6px rgba(99, 102, 241, 0.10), 0 18px 50px rgba(15,23,42,0.08);
         }
 
-        /* Panel header subtle shimmer line */
         .results-panel-head::after {
             content: '';
             display: block;
@@ -95,51 +66,20 @@
             position: relative;
         }
 
-        /* ============================================================
-           TABLE ROWS — staggered slide-in
-           ============================================================ */
         .results-table-row {
-            animation: rowSlideIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
             transition: background-color 0.2s ease, transform 0.2s ease;
         }
         .results-table-row:hover {
             transform: translateX(4px);
         }
 
-        /* Row stagger (up to 10 rows) */
-        .results-divider tr:nth-child(1)  { animation-delay: 0.10s; }
-        .results-divider tr:nth-child(2)  { animation-delay: 0.18s; }
-        .results-divider tr:nth-child(3)  { animation-delay: 0.26s; }
-        .results-divider tr:nth-child(4)  { animation-delay: 0.34s; }
-        .results-divider tr:nth-child(5)  { animation-delay: 0.42s; }
-        .results-divider tr:nth-child(6)  { animation-delay: 0.50s; }
-        .results-divider tr:nth-child(7)  { animation-delay: 0.58s; }
-        .results-divider tr:nth-child(8)  { animation-delay: 0.66s; }
-        .results-divider tr:nth-child(9)  { animation-delay: 0.74s; }
-        .results-divider tr:nth-child(10) { animation-delay: 0.82s; }
-
-        /* Table header fade-in */
-        .results-table-head {
-            animation: fadeIn 0.5s ease both;
-            animation-delay: 0.05s;
-        }
-
-        /* ============================================================
-           MOBILE CARDS — slide-up stagger
-           ============================================================ */
         .results-mobile-row {
-            animation: fadeSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
             transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
         .results-mobile-row:hover {
             transform: translateY(-3px);
             box-shadow: 0 10px 30px rgba(15, 23, 42, 0.09);
         }
-        .results-mobile-row:nth-child(1) { animation-delay: 0.10s; }
-        .results-mobile-row:nth-child(2) { animation-delay: 0.20s; }
-        .results-mobile-row:nth-child(3) { animation-delay: 0.30s; }
-        .results-mobile-row:nth-child(4) { animation-delay: 0.40s; }
-        .results-mobile-row:nth-child(5) { animation-delay: 0.50s; }
 
         .results-mobile-mini {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -149,9 +89,6 @@
             box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
         }
 
-        /* ============================================================
-           BUTTONS — lift on hover
-           ============================================================ */
         a.bg-indigo-600,
         a.bg-emerald-600 {
             transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -170,9 +107,7 @@
         </style>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 relative z-10">
-            @include('student.results.partials.practice-history-skeleton')
-
-            <div x-cloak x-show="loaded" class="space-y-6">
+            <div class="space-y-6">
                 <div class="grid gap-4 md:grid-cols-3">
                     <div class="history-card rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
                         <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">Total Latihan</p>

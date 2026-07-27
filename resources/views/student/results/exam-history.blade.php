@@ -15,14 +15,10 @@
 
     {{-- Elemen Background Image dihapus agar tidak merusak layout --}}
 
-    <div class="exam-history-page py-8 bg-slate-50 min-h-screen" x-data="{ loaded: false, init() { setTimeout(() => { this.loaded = true }, 350) } }">
+    <div class="exam-history-page py-8 bg-slate-50 min-h-screen">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-            
-            {{-- SKELETON LOADING --}}
-            @include('student.results.partials.exam-history-skeleton')
 
-            {{-- MAIN CONTENT --}}
-            <div x-cloak x-show="loaded" class="space-y-6">
+            <div class="space-y-6">
                 <div class="grid gap-4 md:grid-cols-3">
                     <div class="history-card rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
                         <p class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400">Total Percobaan</p>
