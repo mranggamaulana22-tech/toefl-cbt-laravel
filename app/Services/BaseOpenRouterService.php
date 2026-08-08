@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 
@@ -149,7 +150,7 @@ abstract class BaseOpenRouterService
     ) {
         if (blank($this->apiKey)) {
             $this->lastError = 'OPENROUTER_API_KEY kosong atau tidak terbaca.';
-            \Log::warning('OpenRouter API key is missing.');
+            Log::warning('OpenRouter API key is missing.');
             return null;
         }
 
@@ -170,7 +171,7 @@ abstract class BaseOpenRouterService
                 }
 
                 $this->lastError = 'OpenRouter timeout. Coba lagi sebentar lagi atau ganti model yang lebih ringan.';
-                \Log::error('OpenRouter timeout', [
+                Log::error('OpenRouter timeout', [
                     'model' => $lastModelTried,
                     'timeout_seconds' => $this->timeoutSeconds,
                     'message' => $e->getMessage(),
@@ -218,7 +219,7 @@ abstract class BaseOpenRouterService
             $body = $lastResponse->body();
             $this->lastError = "OpenRouter HTTP {$status}: {$body}";
 
-            \Log::error('OpenRouter non-success response', [
+            Log::error('OpenRouter non-success response', [
                 'status' => $status,
                 'model' => $lastModelTried ?: $this->model,
                 'body' => $body,

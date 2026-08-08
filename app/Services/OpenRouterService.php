@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Log;
 use Exception;
 
 /**
@@ -38,7 +39,7 @@ class OpenRouterService extends BaseOpenRouterService
             );
         } catch (Exception $e) {
             $this->lastError = $e->getMessage();
-            \Log::error('OpenRouter API Error: ' . $e->getMessage());
+            Log::error('OpenRouter API Error: ' . $e->getMessage());
             return null;
         }
     }
