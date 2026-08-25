@@ -6,7 +6,7 @@
         $desktopLinks = $isAdmin
             ? [
                 ['label' => 'Dashboard', 'route' => 'dashboard', 'active' => 'dashboard'],
-                ['label' => 'Soal Ujian', 'route' => 'questions.index', 'active' => 'questions.*'],
+                ['label' => 'Soal Ujian', 'route' => 'paket-soal.index', 'active' => 'paket-soal.*'],
                 ['label' => 'Soal Latihan', 'route' => 'admin.practice-questions.index', 'active' => 'admin.practice-questions.*'],
                 ['label' => 'Riwayat Latihan', 'route' => 'practice-history.index', 'active' => 'practice-history.*'],
                 ['label' => 'Gradebook', 'route' => 'gradebook.index', 'active' => 'gradebook.*'],

@@ -52,7 +52,10 @@ class ExamFlowService
                 ->first();
 
             if (!$examSession) {
-                $questionIds = $this->questionSelectionService->generateOrderedExamQuestionIds();
+                // Soal ditarik khusus dari paket yang admin pilih saat
+                // membuka sesi ini (exam_settings.paket_soal_id), bukan
+                // lagi lintas semua paket.
+                $questionIds = $this->questionSelectionService->generateOrderedExamQuestionIds($setting->paket_soal_id);
 
                 if (empty($questionIds)) {
                     throw new \RuntimeException('Bank soal ujian belum memenuhi kebutuhan 140 soal. Sesi ujian tidak bisa dimulai.');
@@ -74,6 +77,10 @@ class ExamFlowService
                 Result::create([
                     'user_id' => $userId,
                     'exam_cycle' => $setting->current_cycle,
+                    // Snapshot paket yang dipakai saat itu, supaya kalau
+                    // admin ganti paket aktif di sesi berikutnya, riwayat
+                    // hasil ujian mahasiswa ini tetap mencatat paket aslinya.
+                    'paket_soal_id' => $setting->paket_soal_id,
                     'started_at' => now(),
                 ]);
             }

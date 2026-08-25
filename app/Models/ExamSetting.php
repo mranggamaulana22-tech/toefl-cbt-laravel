@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ExamSetting extends Model
 {
@@ -12,11 +13,20 @@ class ExamSetting extends Model
     protected $fillable = [
         'is_open',
         'current_cycle',
+        'paket_soal_id',
+        'access_code',
+        'access_code_generated_at',
     ];
 
     protected $casts = [
         'is_open' => 'boolean',
+        'access_code_generated_at' => 'datetime',
     ];
+
+    public function paketSoal(): BelongsTo
+    {
+        return $this->belongsTo(PaketSoal::class);
+    }
 
     public static function current(): self
     {

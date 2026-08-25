@@ -10,10 +10,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Services\QuestionExportService;
+use App\Services\PracticeQuestionImportService;
 
 class PracticeQuestionController extends Controller
 {
-    public function __construct(private QuestionExportService $questionExportService)
+    public function __construct(
+        private QuestionExportService $questionExportService,
+        private PracticeQuestionImportService $practiceQuestionImportService,
+    )
     {
     }
 
@@ -135,7 +139,10 @@ class PracticeQuestionController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Soal latihan berhasil diperbarui.',
-            'row_html' => view('admin.practice-questions.partials.row', ['question' => $practiceQuestion->fresh()])->render(),
+            'row_html' => view('admin.practice-questions.partials.row', [
+                'question' => $practiceQuestion->fresh(),
+                'no' => $request->input('row_no'),
+            ])->render(),
             'question_id' => $practiceQuestion->id,
         ]);
     }
@@ -152,8 +159,54 @@ class PracticeQuestionController extends Controller
             ->with('success', 'Soal latihan berhasil dihapus.');
     }
 
-    public function exportCsv(Request $request): StreamedResponse
+    public function exportXlsx(Request $request): StreamedResponse
     {
-        return $this->questionExportService->exportPracticeQuestions($request);
+        return $this->questionExportService->exportPracticeQuestionsXlsx($request);
+    }
+
+    /**
+     * Download template Excel kosong (header + contoh baris + dropdown
+     * validasi) untuk diisi admin sebelum import massal.
+     */
+    public function importTemplate(): StreamedResponse
+    {
+        return $this->practiceQuestionImportService->generateTemplate();
+    }
+
+    /**
+     * Import massal soal latihan dari file .xlsx atau .zip (xlsx + folder
+     * audio/). Validasi bersifat all-or-nothing — lihat
+     * PracticeQuestionImportService::import() untuk detail.
+     */
+    public function import(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,zip|max:51200',
+        ], [
+            'file.mimes' => 'File harus berformat .xlsx atau .zip.',
+            'file.max' => 'Ukuran file maksimal 50MB.',
+        ]);
+
+        $result = $this->practiceQuestionImportService->import($request->file('file'));
+
+        if (! $result['success']) {
+            return back()
+                ->with('import_errors', $result['errors'])
+                ->with('import_error_type', $result['error_type']);
+        }
+
+        $message = "{$result['created']} soal latihan berhasil diimport.";
+
+        if ($result['audio_attached'] > 0) {
+            $message .= " {$result['audio_attached']} file audio berhasil dilampirkan.";
+        }
+
+        if (! empty($result['audio_missing'])) {
+            return redirect()->route('admin.practice-questions.index')
+                ->with('success', $message)
+                ->with('import_warnings', $result['audio_missing']);
+        }
+
+        return redirect()->route('admin.practice-questions.index')->with('success', $message);
     }
 }

@@ -14,6 +14,7 @@ class Result extends Model
     protected $fillable = [
         'user_id',
         'exam_cycle',
+        'paket_soal_id',
         'started_at',
         'correct_listening',
         'correct_structure',
@@ -44,6 +45,11 @@ class Result extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function paketSoal(): BelongsTo
+    {
+        return $this->belongsTo(PaketSoal::class);
     }
 
     public function scopeSubmitted(Builder $query): Builder

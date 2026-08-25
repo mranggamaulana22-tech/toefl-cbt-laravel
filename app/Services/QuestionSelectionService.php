@@ -17,7 +17,14 @@ class QuestionSelectionService
         return config('exam.exam');
     }
 
-    public function getExamReadinessReport(): array
+    /**
+     * Laporan kelengkapan bank soal untuk exam. Kalau $paketSoalId diisi,
+     * dihitung hanya dari soal milik paket itu (dipakai saat validasi
+     * sebelum admin bisa memilih paket untuk sesi ujian). Kalau null,
+     * dihitung lintas semua paket (dipertahankan untuk kompatibilitas
+     * pemanggil lama, walau di alur baru selalu diisi).
+     */
+    public function getExamReadinessReport(?int $paketSoalId = null): array
     {
         $examConfig = $this->getExamRequirements();
         $sectionTargets = $examConfig['sections'];
@@ -28,7 +35,9 @@ class QuestionSelectionService
 
         foreach ($sectionOrder as $section) {
             $required = (int) ($sectionTargets[$section] ?? 0);
-            $available = (int) Question::where('category', $section)->count();
+            $available = (int) Question::where('category', $section)
+                ->when($paketSoalId, fn ($query) => $query->where('paket_soal_id', $paketSoalId))
+                ->count();
             $shortage = max(0, $required - $available);
 
             if ($shortage > 0) {
@@ -45,19 +54,24 @@ class QuestionSelectionService
         return [
             'can_start' => $canStart,
             'required_total' => (int) $examConfig['total_questions'],
-            'available_total' => (int) Question::count(),
+            'available_total' => (int) Question::query()
+                ->when($paketSoalId, fn ($query) => $query->where('paket_soal_id', $paketSoalId))
+                ->count(),
             'sections' => $sections,
         ];
     }
 
     /**
      * Select and order question IDs for exam
-     * Returns configured number of questions distributed across sections
-     * Configuration: config/exam.php
+     * Returns configured number of questions distributed across sections,
+     * diambil khusus dari paket $paketSoalId. Jika paket tidak lengkap
+     * (readiness report gagal), kembalikan array kosong seperti perilaku
+     * lama supaya pemanggil (ExamFlowService) tetap bisa menangani kasus
+     * "bank soal belum siap" dengan cara yang sama.
      */
-    public function generateOrderedExamQuestionIds(): array
+    public function generateOrderedExamQuestionIds(?int $paketSoalId = null): array
     {
-        $report = $this->getExamReadinessReport();
+        $report = $this->getExamReadinessReport($paketSoalId);
 
         if (! $report['can_start']) {
             return [];
@@ -78,6 +92,7 @@ class QuestionSelectionService
             }
 
             $sectionIds = Question::where('category', $section)
+                ->when($paketSoalId, fn ($query) => $query->where('paket_soal_id', $paketSoalId))
                 ->inRandomOrder()
                 ->limit($target)
                 ->pluck('id')

@@ -3,7 +3,7 @@
     Dipakai di index.blade.php (loop awal) dan dikembalikan sebagai JSON
     setelah update via modal, supaya baris tabel bisa diganti tanpa reload halaman.
 
-    Variabel yang dibutuhkan: $q (instance Question), $no (nomor urut baris)
+    Variabel yang dibutuhkan: $q (instance Question), $no (nomor urut baris), $paketSoal (paket induk)
 --}}
 <tr class="transition-colors group hover:bg-slate-50 dark:hover:bg-white/[0.02]" id="row-{{ $q->id }}">
     <td class="px-6 py-3 text-sm font-semibold text-slate-500">{{ $no }}</td>
@@ -28,7 +28,7 @@
                 class="inline-flex items-center px-3 py-1.5 rounded-lg border-2 border-blue-400 bg-blue-600 text-white text-xs font-bold transition active:scale-90 shadow-md hover:bg-blue-700 hover:border-blue-500">
                 EDIT
             </button>
-            <form action="{{ route('questions.destroy', $q->id) }}" method="POST" onsubmit="return confirm('Hapus soal ini?');" class="inline">
+            <form action="{{ route('paket-soal.questions.destroy', [$paketSoal, $q->id]) }}" method="POST" onsubmit="return confirm('Hapus soal ini?');" class="inline">
                 @csrf @method('DELETE')
                 <button type="submit"
                     class="inline-flex items-center px-3 py-1.5 rounded-lg border-2 border-red-400 bg-red-600 text-white text-xs font-bold transition active:scale-90 shadow-md hover:bg-red-700 hover:border-red-500">

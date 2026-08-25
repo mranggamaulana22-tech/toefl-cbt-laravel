@@ -4,8 +4,12 @@
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-gray-50/50 dark:bg-white/5 border-b border-gray-100 dark:border-white/10 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400">
+                        <th class="px-6 py-4">No</th>
                         <th class="px-6 py-4">Nama Peserta</th>
-                        <th class="px-6 py-4">Email / NPM</th>
+                        <th class="px-6 py-4">Email</th>
+                        <th class="px-6 py-4">NPM</th>
+                        <th class="px-6 py-4">Jurusan</th>
+                        <th class="px-6 py-4">Angkatan</th>
                         <th class="px-6 py-4 text-right">Aksi</th>
                     </tr>
                 </thead>
@@ -13,10 +17,22 @@
                     @forelse($students as $student)
                         <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
                             <td class="px-6 py-4">
+                                <div class="text-sm font-semibold text-gray-500 dark:text-slate-400">{{ $students->firstItem() + $loop->index }}</div>
+                            </td>
+                            <td class="px-6 py-4">
                                 <div class="font-medium text-gray-900 dark:text-white">{{ $student->name }}</div>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="text-sm text-gray-500 dark:text-slate-400">{{ $student->email }}</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-500 dark:text-slate-400">{{ $student->npm ?? '-' }}</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-500 dark:text-slate-400">{{ $student->class ?? '-' }}</div>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="text-sm text-gray-500 dark:text-slate-400">{{ $student->angkatan ?? '-' }}</div>
                             </td>
                             
                             <!-- Kolom Aksi dengan Flexbox (Gap-2) -->
@@ -51,7 +67,7 @@
                                         
                                         <div class="bg-white dark:bg-[#111827] border dark:border-white/10 rounded-xl max-w-md w-full p-6 shadow-xl relative">
                                             <div class="flex justify-between items-center mb-5">
-                                                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Edit / Reset Password</h3>
+                                                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Edit Data Mahasiswa</h3>
                                                 <button type="button" onclick="document.getElementById('edit-modal-{{ $student->id }}').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -70,9 +86,38 @@
                                                 </div>
 
                                                 <div class="mb-4">
-                                                    <label class="block text-xs font-semibold uppercase mb-1 text-gray-500 dark:text-slate-400">Email / NPM</label>
+                                                    <label class="block text-xs font-semibold uppercase mb-1 text-gray-500 dark:text-slate-400">Email</label>
                                                     <input type="email" name="email" value="{{ $student->email }}" required
                                                            class="w-full rounded-lg bg-white border-gray-300 focus:ring-indigo-500 text-gray-900 dark:!bg-[#1e293b] dark:!text-white dark:border-white/10">
+                                                </div>
+
+                                                <div class="mb-4">
+                                                    <label class="block text-xs font-semibold uppercase mb-1 text-gray-500 dark:text-slate-400">NPM</label>
+                                                    <input type="text" name="npm" value="{{ $student->npm }}"
+                                                           class="w-full rounded-lg bg-white border-gray-300 focus:ring-indigo-500 text-gray-900 dark:!bg-[#1e293b] dark:!text-white dark:border-white/10">
+                                                </div>
+
+                                                <div class="mb-4 grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <label class="block text-xs font-semibold uppercase mb-1 text-gray-500 dark:text-slate-400">Jurusan</label>
+                                                        <select name="class"
+                                                               class="w-full rounded-lg bg-white border-gray-300 focus:ring-indigo-500 text-gray-900 dark:!bg-[#1e293b] dark:!text-white dark:border-white/10">
+                                                            <option value="">-</option>
+                                                            @foreach(\App\Enums\Jurusan::labels() as $value => $label)
+                                                                <option value="{{ $value }}" @selected($student->class === $value)>{{ $label }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-xs font-semibold uppercase mb-1 text-gray-500 dark:text-slate-400">Angkatan</label>
+                                                        <select name="angkatan"
+                                                               class="w-full rounded-lg bg-white border-gray-300 focus:ring-indigo-500 text-gray-900 dark:!bg-[#1e293b] dark:!text-white dark:border-white/10">
+                                                            <option value="">-</option>
+                                                            @for($year = now()->year + 1; $year >= now()->year - 5; $year--)
+                                                                <option value="{{ $year }}" @selected((string) $student->angkatan === (string) $year)>{{ $year }}</option>
+                                                            @endfor
+                                                        </select>
+                                                    </div>
                                                 </div>
 
                                                 <div class="mb-6">
@@ -101,7 +146,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="3" class="px-6 py-8 text-center text-gray-500 dark:text-slate-400">
+                            <td colspan="7" class="px-6 py-8 text-center text-gray-500 dark:text-slate-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-12 h-12 mx-auto mb-3 opacity-50 block">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 0 1 2.012 1.244l.256.512a2.25 2.25 0 0 0 2.013 1.244h3.218a2.25 2.25 0 0 0 2.013-1.244l.256-.512a2.25 2.25 0 0 1 2.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 0 0-2.15-1.588H6.911a2.25 2.25 0 0 0-2.15 1.588L2.35 12.839a2.25 2.25 0 0 0-.1.661Z" />
                                 </svg>

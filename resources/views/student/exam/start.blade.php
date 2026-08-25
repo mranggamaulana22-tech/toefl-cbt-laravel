@@ -111,13 +111,36 @@
 
                         <div class="mt-6 flex flex-col gap-3">
                             @if($canStart)
-                                <a
-                                    href="{{ route('exam.test') }}"
-                                    data-transition
-                                    class="btn-start inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-bold text-indigo-700 shadow-sm"
-                                >
-                                    Saya Siap, Mulai Tes
-                                </a>
+                                <form method="POST" action="{{ route('exam.enter') }}" class="flex flex-col gap-3" x-data="{ code: '{{ old('access_code') }}' }">
+                                    @csrf
+                                    <div>
+                                        <label for="access_code" class="mb-1.5 block text-xs font-bold uppercase tracking-[0.18em] text-violet-100">
+                                            Kode Akses Ujian
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="access_code"
+                                            name="access_code"
+                                            maxlength="10"
+                                            autocomplete="off"
+                                            placeholder="Masukkan kode dari pengawas"
+                                            x-model="code"
+                                            class="w-full rounded-2xl border {{ $errors->has('access_code') ? 'border-red-300 bg-red-50/10' : 'border-white/20 bg-white/10' }} px-4 py-3 text-sm font-semibold uppercase tracking-widest text-white placeholder:text-violet-100/50 placeholder:normal-case placeholder:tracking-normal placeholder:font-normal focus:border-white/50 focus:outline-none focus:ring-2 focus:ring-white/30"
+                                        >
+                                        @error('access_code')
+                                            <p class="mt-1.5 text-xs font-semibold text-red-200">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <button
+                                        type="submit"
+                                        :disabled="code.trim().length === 0"
+                                        :class="code.trim().length === 0 ? 'opacity-50 cursor-not-allowed' : ''"
+                                        class="btn-start inline-flex items-center justify-center rounded-2xl bg-white px-5 py-3 text-sm font-bold text-indigo-700 shadow-sm"
+                                    >
+                                        Saya Siap, Mulai Tes
+                                    </button>
+                                </form>
                             @else
                                 <button
                                     type="button"

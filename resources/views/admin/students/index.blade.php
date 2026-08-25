@@ -12,19 +12,29 @@
 
             {{-- Filter Card --}}
             <div class="p-4 mb-6 sm:rounded-xl border transition-all bg-white border-gray-100 shadow-sm dark:bg-[#111827] dark:border-white/10 dark:shadow-none">
-                <form id="student-filter-form" method="GET" action="{{ route('students.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
+                <form id="student-filter-form" method="GET" action="{{ route('students.index') }}" class="grid grid-cols-1 md:grid-cols-5 gap-3 items-end">
                     <div class="md:col-span-2">
                         <label for="search" class="block text-xs font-semibold uppercase mb-1 text-gray-500 dark:text-slate-500">Live Search Nama / NPM</label>
                         <input id="search" name="search" type="text" value="{{ $filters['search'] }}" placeholder="Ketik nama atau NPM..."
                             class="w-full rounded-lg focus:ring-indigo-500 transition bg-white border-gray-300 text-gray-900 dark:!bg-[#1e293b] dark:!text-white dark:border-white/10 dark:placeholder-slate-600">
                     </div>
                     <div>
-                        <label for="class" class="block text-xs font-semibold uppercase mb-1 text-gray-500 dark:text-slate-500">Filter Kelas</label>
+                        <label for="class" class="block text-xs font-semibold uppercase mb-1 text-gray-500 dark:text-slate-500">Filter Jurusan</label>
                         <select id="class" name="class"
                             class="w-full rounded-lg focus:ring-indigo-500 transition bg-white border-gray-300 text-gray-900 dark:!bg-[#1e293b] dark:!text-white dark:border-white/10">
-                            <option value="">Semua Kelas</option>
+                            <option value="">Semua Jurusan</option>
                             @foreach($classes as $className)
                                 <option value="{{ $className }}" @selected($filters['class'] === $className)>{{ $className }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="angkatan" class="block text-xs font-semibold uppercase mb-1 text-gray-500 dark:text-slate-500">Filter Angkatan</label>
+                        <select id="angkatan" name="angkatan"
+                            class="w-full rounded-lg focus:ring-indigo-500 transition bg-white border-gray-300 text-gray-900 dark:!bg-[#1e293b] dark:!text-white dark:border-white/10">
+                            <option value="">Semua Angkatan</option>
+                            @foreach($angkatans as $year)
+                                <option value="{{ $year }}" @selected((string) $filters['angkatan'] === (string) $year)>{{ $year }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -48,9 +58,10 @@
             const form = document.getElementById('student-filter-form');
             const searchInput = document.getElementById('search');
             const classSelect = document.getElementById('class');
+            const angkatanSelect = document.getElementById('angkatan');
             const resultsContainer = document.getElementById('students-results');
 
-            if (!form || !searchInput || !classSelect || !resultsContainer) return;
+            if (!form || !searchInput || !classSelect || !angkatanSelect || !resultsContainer) return;
 
             let activeRequest = null;
 
@@ -94,6 +105,7 @@
             });
 
             classSelect.addEventListener('change', submitFilters);
+            angkatanSelect.addEventListener('change', submitFilters);
 
             document.addEventListener('click', function (event) {
                 const link = event.target.closest('#students-results a');

@@ -13,14 +13,18 @@ class QuestionRepository implements QuestionRepositoryInterface
         return $query->latest()->paginate($perPage);
     }
 
-    public function countByCategory(string $category): int
+    public function countByCategory(string $category, ?int $paketSoalId = null): int
     {
-        return Question::where('category', $category)->count();
+        return Question::where('category', $category)
+            ->when($paketSoalId, fn ($query) => $query->where('paket_soal_id', $paketSoalId))
+            ->count();
     }
 
-    public function totalCount(): int
+    public function totalCount(?int $paketSoalId = null): int
     {
-        return Question::count();
+        return Question::query()
+            ->when($paketSoalId, fn ($query) => $query->where('paket_soal_id', $paketSoalId))
+            ->count();
     }
 
     public function create(array $data)
@@ -47,6 +51,10 @@ class QuestionRepository implements QuestionRepositoryInterface
 
         if (!empty($filters['category'] ?? null)) {
             $query->where('category', $filters['category']);
+        }
+
+        if (!empty($filters['paket_soal_id'] ?? null)) {
+            $query->where('paket_soal_id', $filters['paket_soal_id']);
         }
 
         return $query;

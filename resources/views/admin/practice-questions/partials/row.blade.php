@@ -1,8 +1,10 @@
 {{--
     Partial: baris tabel satu soal latihan.
     Gaya disamakan dengan questions/partials/row.blade.php: badge solid, tombol solid uppercase.
+    Variabel yang dibutuhkan: $question (instance PracticeQuestion), $no (nomor urut baris)
 --}}
 <tr class="transition-colors group hover:bg-slate-50 dark:hover:bg-white/[0.02]" id="row-{{ $question->id }}">
+    <td class="px-6 py-4 text-sm font-semibold text-slate-500">{{ $no ?? $question->id }}</td>
     <td class="px-6 py-4">
         <x-category-badge :category="$question->category" :solid="true" />
     </td>
@@ -33,7 +35,7 @@
                 LIHAT
             </button>
             <button type="button"
-                @click="openEditModal({{ $question->id }})"
+                @click="openEditModal({{ $question->id }}, { row_no: {{ $no ?? $question->id }} })"
                 class="inline-flex items-center px-3 py-1.5 rounded-lg border-2 border-blue-400 bg-blue-600 text-white text-xs font-bold transition active:scale-90 shadow-md hover:bg-blue-700 hover:border-blue-500">
                 EDIT
             </button>

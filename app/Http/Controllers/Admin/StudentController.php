@@ -20,6 +20,7 @@ class StudentController extends Controller
     {
         $filters = $request->validate([
             'class' => ['nullable', 'string', 'max:50'],
+            'angkatan' => ['nullable', 'integer', 'digits:4'],
             'search' => ['nullable', 'string', 'max:100'],
         ]);
 
@@ -46,13 +47,18 @@ class StudentController extends Controller
 
         $request->validate([
             'name'  => ['required', 'string', 'max:255'],
-            // Jika kamu menggunakan username atau npm, ganti 'email' menjadi 'username'
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $student->id],
+            'npm' => ['nullable', 'string', 'max:20'],
+            'class' => ['nullable', 'string', 'in:' . implode(',', \App\Enums\Jurusan::values())],
+            'angkatan' => ['nullable', 'integer', 'digits:4'],
             'password' => ['nullable', 'string', 'min:6'],
         ]);
 
         $student->name = $request->name;
         $student->email = $request->email;
+        $student->npm = $request->npm;
+        $student->class = $request->class;
+        $student->angkatan = $request->angkatan;
 
         // Hash dan simpan password baru HANYA jika form password diisi
         if ($request->filled('password')) {

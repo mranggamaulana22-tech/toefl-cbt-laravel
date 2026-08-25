@@ -11,12 +11,16 @@ class StudentDirectoryService
     public function indexData(array $filters): array
     {
         $classFilter = $filters['class'] ?? null;
+        $angkatanFilter = $filters['angkatan'] ?? null;
         $searchFilter = trim((string) ($filters['search'] ?? ''));
 
         $students = User::query()
             ->where('role', 'student')
             ->when($classFilter, function ($query) use ($classFilter) {
                 $query->where('class', $classFilter);
+            })
+            ->when($angkatanFilter, function ($query) use ($angkatanFilter) {
+                $query->where('angkatan', $angkatanFilter);
             })
             ->when($searchFilter, function ($query) use ($searchFilter) {
                 $query->where(function ($subQuery) use ($searchFilter) {
@@ -30,14 +34,17 @@ class StudentDirectoryService
 
         $students->appends([
             'class' => $classFilter,
+            'angkatan' => $angkatanFilter,
             'search' => $searchFilter,
         ]);
 
         return [
             'students' => $students,
             'classes' => $this->availableClasses(),
+            'angkatans' => $this->availableAngkatans(),
             'filters' => [
                 'class' => $classFilter,
+                'angkatan' => $angkatanFilter,
                 'search' => $searchFilter,
             ],
         ];
@@ -51,6 +58,15 @@ class StudentDirectoryService
             ->distinct()
             ->orderBy('class')
             ->pluck('class');
+    }
+
+    public function availableAngkatans(): Collection
+    {
+        return User::where('role', 'student')
+            ->whereNotNull('angkatan')
+            ->distinct()
+            ->orderByDesc('angkatan')
+            ->pluck('angkatan');
     }
 
     public function deleteStudent(User $student): void

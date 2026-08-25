@@ -17,6 +17,11 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+        {{-- Font Awesome — dipakai di banyak halaman admin (ikon plus, trash, check-circle, dll)
+             tapi sebelumnya tidak dimuat di layout ini, hanya ada di welcome.blade.php.
+             Akibatnya semua ikon fas fa-* di halaman admin tidak tampil sama sekali. --}}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
         {{-- SweetAlert2 CSS & Animate.css untuk animasi pop-up yang smooth --}}
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">

@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Question extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'paket_soal_id',
         'category',
         'passage',
         'audio_path',
@@ -21,4 +23,9 @@ class Question extends Model
         'option_d',
         'correct_answer',
     ];
+
+    public function paketSoal(): BelongsTo
+    {
+        return $this->belongsTo(PaketSoal::class);
+    }
 }

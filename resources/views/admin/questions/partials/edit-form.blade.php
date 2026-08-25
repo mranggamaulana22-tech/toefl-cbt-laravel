@@ -1,9 +1,11 @@
 {{--
     Partial: isi form edit soal ujian — KHUSUS untuk modal.
     TIDAK boleh ada <x-app-layout>, navbar, atau page-banner di sini.
+
+    Variabel yang dibutuhkan: $question, $rowNo, $paketSoal
 --}}
 <form
-    action="{{ route('questions.update', $question->id) }}"
+    action="{{ route('paket-soal.questions.update', [$paketSoal, $question->id]) }}"
     method="POST"
     enctype="multipart/form-data"
     @submit.prevent="submitEditForm($event, {{ $question->id }})"

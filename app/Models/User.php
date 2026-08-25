@@ -25,6 +25,7 @@ class User extends Authenticatable
         'password',
         'npm',
         'class',
+        'angkatan',
         'role',
         'profile_photo_path',
     ];

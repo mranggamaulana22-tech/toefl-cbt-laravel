@@ -24,12 +24,30 @@
             <x-input-error :messages="$errors->get('npm')" class="mt-2 text-sm text-red-600" />
         </div>
 
-        <div class="mt-4">
-            <x-input-label for="class" :value="__('Kelas')" class="text-sm font-semibold text-slate-700" />
-            <input id="class" type="text" name="class" value="{{ old('class') }}" autocomplete="off"
-                class="mt-2 block w-full rounded-xl border border-violet-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-violet-500 focus:ring-violet-500"
-                placeholder="Contoh: TI-2A">
-            <x-input-error :messages="$errors->get('class')" class="mt-2 text-sm text-red-600" />
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+                <x-input-label for="class" :value="__('Jurusan')" class="text-sm font-semibold text-slate-700" />
+                <select id="class" name="class" required
+                    class="mt-2 block w-full rounded-xl border border-violet-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-violet-500 focus:ring-violet-500">
+                    <option value="" disabled {{ old('class') ? '' : 'selected' }}>Pilih jurusan</option>
+                    @foreach($jurusanOptions as $value => $label)
+                        <option value="{{ $value }}" @selected(old('class') === $value)>{{ $label }}</option>
+                    @endforeach
+                </select>
+                <x-input-error :messages="$errors->get('class')" class="mt-2 text-sm text-red-600" />
+            </div>
+
+            <div>
+                <x-input-label for="angkatan" :value="__('Angkatan')" class="text-sm font-semibold text-slate-700" />
+                <select id="angkatan" name="angkatan" required
+                    class="mt-2 block w-full rounded-xl border border-violet-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-violet-500 focus:ring-violet-500">
+                    <option value="" disabled {{ old('angkatan') ? '' : 'selected' }}>Pilih angkatan</option>
+                    @foreach($angkatanOptions as $year)
+                        <option value="{{ $year }}" @selected((string) old('angkatan') === (string) $year)>{{ $year }}</option>
+                    @endforeach
+                </select>
+                <x-input-error :messages="$errors->get('angkatan')" class="mt-2 text-sm text-red-600" />
+            </div>
         </div>
 
         <div class="mt-4">

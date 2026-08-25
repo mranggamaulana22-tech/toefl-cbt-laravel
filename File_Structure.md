@@ -1,4 +1,6 @@
-# Project File Structure
+﻿# Structure File Proyek
+
+Berikut struktur file proyek yang sesuai dengan kondisi saat ini di workspace.
 
 .
 ├── .editorconfig
@@ -8,44 +10,36 @@
 ├── .eslintrc.cjs
 ├── .gitattributes
 ├── .github/
+│   └── workflows/
+│       └── frontend-quality.yml
+├── .git/
 ├── .gitignore
 ├── .phpunit.result.cache
 ├── .prettierignore
 ├── .prettierrc.json
-├── artisan
-├── blade_unused_report.csv
-├── clear
-├── composer.json
-├── composer.lock
-├── File_Structure.md
-├── grep
-├── lighthouse-report-v2.json
-├── lighthouse-report.json
-├── package-lock.json
-├── package.json
-├── phpunit.xml
-├── postcss.config.cjs
-├── PRD.md
-├── README.md
-├── STUDENT_AUDIT_REPORT.md
-├── stylelint.config.cjs
-├── tailwind.config.js
-├── test_query.php
-├── tools/
-│   └── scan_blade_usage.ps1
-├── vite.config.js
+├── .scribe/
+│   ├── .filehashes
+│   ├── auth.md
+│   ├── endpoints/
+│   │   ├── 00.yaml
+│   │   └── custom.0.yaml
+│   ├── endpoints.cache/
+│   │   └── 00.yaml
+│   └── intro.md
 ├── app/
-│   ├── Console/ (empty)
+│   ├── Console/
 │   ├── Enums/
 │   │   ├── AiStatus.php
+│   │   ├── Jurusan.php
 │   │   ├── QuestionCategory.php
 │   │   └── UserRole.php
-│   ├── Exceptions/ (empty)
+│   ├── Exceptions/
 │   ├── Http/
 │   │   ├── Controllers/
 │   │   │   ├── Admin/
 │   │   │   │   ├── ExamControlController.php
 │   │   │   │   ├── GradebookController.php
+│   │   │   │   ├── PaketSoalController.php
 │   │   │   │   ├── PracticeHistoryController.php
 │   │   │   │   ├── PracticeQuestionController.php
 │   │   │   │   ├── QuestionController.php
@@ -87,6 +81,7 @@
 │   │       ├── Auth/
 │   │       │   └── LoginRequest.php
 │   │       ├── ProfileUpdateRequest.php
+│   │       ├── StartExamRequest.php
 │   │       ├── StoreQuestionRequest.php
 │   │       ├── SubmitExamRequest.php
 │   │       ├── SubmitPracticeRequest.php
@@ -96,6 +91,7 @@
 │   ├── Models/
 │   │   ├── ExamSession.php
 │   │   ├── ExamSetting.php
+│   │   ├── PaketSoal.php
 │   │   ├── PracticeProgress.php
 │   │   ├── PracticeQuestion.php
 │   │   ├── PracticeQuestionReview.php
@@ -129,10 +125,12 @@
 │   │   ├── OpenRouterService.php
 │   │   ├── PracticeFlowService.php
 │   │   ├── PracticeProgressService.php
+│   │   ├── PracticeQuestionImportService.php
 │   │   ├── PracticeReviewFlowService.php
 │   │   ├── PracticeReviewService.php
 │   │   ├── ProfilePhotoService.php
 │   │   ├── QuestionExportService.php
+│   │   ├── QuestionImportService.php
 │   │   ├── QuestionSelectionService.php
 │   │   ├── ResponseFormatter.php
 │   │   ├── ScoringService.php
@@ -141,15 +139,21 @@
 │   │   ├── StudentStatsAggregator.php
 │   │   └── TrendDataBuilder.php
 │   └── View/
-│       ├── Components/ (empty)
 │       ├── AppLayout.php
-│       └── GuestLayout.php
+│       ├── Components/
+│       ├── GuestLayout.php
+│       └── ...
+├── artisan
+├── blade_unused_report.csv
 ├── bootstrap/
+│   ├── app.php
 │   ├── cache/
 │   │   ├── packages.php
 │   │   └── services.php
-│   ├── app.php
 │   └── providers.php
+├── clear
+├── composer.json
+├── composer.lock
 ├── config/
 │   ├── app.php
 │   ├── auth.php
@@ -203,11 +207,11 @@
 │   │   ├── 2026_04_24_223754_add_streak_system_to_users_table.php
 │   │   ├── 2026_05_02_000001_remove_duplicate_data_from_practice_result_items.php
 │   │   └── 2026_05_02_000002_create_exam_sessions_table.php
-│   ├── seeders/
-│   │   ├── DatabaseSeeder.php
-│   │   ├── PracticeQuestionSeeder.php
-│   │   ├── QuestionSeeder.php
-│   │   └── UserSeeder.php
+│   └── seeders/
+│       ├── DatabaseSeeder.php
+│       ├── PracticeQuestionSeeder.php
+│       ├── QuestionSeeder.php
+│       └── UserSeeder.php
 ├── docs/
 │   ├── Activity_Diagram.md
 │   ├── Class_Diagram.md
@@ -216,16 +220,24 @@
 │   ├── requirements.md
 │   ├── usecase.md
 │   └── usecase.puml
+├── File_Structure.md
+├── grep
+├── lighthouse-report-v2.json
+├── lighthouse-report.json
 ├── node_modules/
+├── package-lock.json
+├── package.json
+├── phpunit.xml
+├── postcss.config.cjs
+├── PRD.md
 ├── public/
 │   ├── .htaccess
 │   ├── animations/
 │   │   └── fire.json
 │   ├── build/
-│   │   ├── assets/
-│   │   │   ├── app-6c3478b3.js
-│   │   │   └── app-e20d259b.css
-│   │   └── manifest.json
+│   │   └── assets/
+│   │       ├── app-6c3478b3.js
+│   │       └── app-e20d259b.css
 │   ├── favicon.ico
 │   ├── hot
 │   ├── images/
@@ -246,11 +258,11 @@
 │       └── questions/
 │           └── audio/
 │               └── HuIIqmKb7AVyZQ9hpwu5IF2wmJaLi1ojK3o45ZVb.mp3
+├── README.md
 ├── resources/
 │   ├── ARCHITECTURE.md
 │   ├── css/
 │   │   ├── app.css
-│   │   ├── theme-background.css
 │   │   ├── base/
 │   │   │   └── tokens.css
 │   │   ├── components/
@@ -266,6 +278,7 @@
 │   │   │       ├── results-index.css
 │   │   │       ├── review-index.css
 │   │   │       └── review-show.css
+│   │   ├── theme-background.css
 │   │   └── themes/
 │   │       ├── admin-shell.css
 │   │       └── student-shell.css
@@ -295,8 +308,11 @@
 │       │   │   ├── index.blade.php
 │       │   │   └── partials/
 │       │   │       └── results.blade.php
-│       │   ├── practice-history/
+│       │   ├── paket-soal/
 │       │   │   └── index.blade.php
+│       │   ├── practice-history/
+│       │   │   ├── index.blade.php
+│       │   │   └── partials/
 │       │   ├── practice-questions/
 │       │   │   ├── create.blade.php
 │       │   │   ├── edit.blade.php
@@ -438,7 +454,19 @@
 │   ├── console.php
 │   └── web.php
 ├── storage/
+│   ├── app/
+│   │   ├── .gitignore
+│   │   ├── public/
+│   │   ├── scribe/
+│   │   └── temp_import_6a8452cd63473/
+│   ├── framework/
+│   └── logs/
+├── STUDENT_AUDIT_REPORT.md
+├── stylelint.config.cjs
+├── tailwind.config.js
+├── test_query.php
 ├── tests/
+│   ├── CreatesApplication.php
 │   ├── Feature/
 │   │   ├── Api/
 │   │   │   └── ApiRoutesTest.php
@@ -449,13 +477,20 @@
 │   │   │   ├── PasswordResetTest.php
 │   │   │   ├── PasswordUpdateTest.php
 │   │   │   └── RegistrationTest.php
-│   │   ├── ExamSessionTest.php
 │   │   ├── ExampleTest.php
+│   │   ├── ExamSessionTest.php
 │   │   ├── ProfileTest.php
 │   │   └── QuestionRepositoryTest.php
-│   ├── Unit/
-│   │   ├── EnumsTest.php
-│   │   └── ExampleTest.php
-│   ├── CreatesApplication.php
-│   └── TestCase.php
-└── vendor/
+│   ├── TestCase.php
+│   └── Unit/
+│       ├── EnumsTest.php
+│       └── ExampleTest.php
+├── tools/
+│   └── scan_blade_usage.ps1
+├── vendor/
+├── vite.config.js
+└── ...
+
+Catatan:
+- Folder seperti node_modules/ dan vendor/ sudah ada karena dependency generator dari npm dan Composer, sehingga struktur lengkapnya sangat besar dan otomatis dibuat oleh sistem.
+- File-file di atas mencakup struktur utama yang benar-benar ada di proyek saat ini, termasuk aplikasi, frontend, konfigurasi, database, route, view, dan test.

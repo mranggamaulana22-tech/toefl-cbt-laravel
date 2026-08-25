@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex flex-col gap-0.5 animate-fade-in-down">
-            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-indigo-500">Bank Soal</p>
+            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-indigo-500">Bank Soal &mdash; {{ $paketSoal->nama }}</p>
             <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Input Soal Baru</h2>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Tambahkan soal TOEFL baru ke dalam database sistem.</p>
+            <p class="text-sm text-slate-500 dark:text-slate-400">Tambahkan soal TOEFL baru ke dalam paket ini.</p>
         </div>
     </x-slot>
 
@@ -21,7 +21,7 @@
                     subtitle="Gunakan pilihan kategori yang valid agar data konsisten dengan engine ujian."
                 />
 
-                <form action="{{ route('questions.store') }}" method="POST" enctype="multipart/form-data" class="p-6 md:p-8">
+                <form action="{{ route('paket-soal.questions.store', $paketSoal) }}" method="POST" enctype="multipart/form-data" class="p-6 md:p-8">
                     @csrf
 
                     <div class="grid gap-6">
@@ -99,7 +99,8 @@
 
                     <x-form-actions
                         submit-label="Simpan Soal"
-                        cancel-route="questions.index"
+                        cancel-route="paket-soal.questions.index"
+                        :cancel-params="$paketSoal->id"
                     />
                 </form>
             </div>
