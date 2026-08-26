@@ -1,3 +1,4 @@
+/* global Alpine */
 import { getStoredTheme, setStoredTheme } from './theme-storage';
 
 export const STUDENT_THEME_STORAGE_KEY = 'theme';
