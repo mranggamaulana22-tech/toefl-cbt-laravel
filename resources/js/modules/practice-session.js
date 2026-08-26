@@ -134,7 +134,6 @@ export function practiceSession(config) {
             const panelLikelyOpen = widthGap > 160 || heightGap > 160;
 
             const started = performance.now();
-            debugger;
             const ended = performance.now();
             const debuggerPaused = (ended - started) > 120;
 
