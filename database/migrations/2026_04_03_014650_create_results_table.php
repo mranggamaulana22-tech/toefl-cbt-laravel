@@ -8,15 +8,20 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('results', function (Blueprint $table) {
-            $table->string('certificate_path')->nullable()->after('score_total');
+        Schema::create('results', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete();
+            $table->integer('score_listening')->default(0);
+            $table->integer('score_structure')->default(0);
+            $table->integer('score_reading')->default(0);
+            $table->integer('score_total')->default(0);
+            $table->string('certificate_path')->nullable();
+            $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::table('results', function (Blueprint $table) {
-            $table->dropColumn('certificate_path');
-        });
+        Schema::dropIfExists('results');
     }
 };
