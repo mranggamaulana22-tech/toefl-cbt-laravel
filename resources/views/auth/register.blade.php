@@ -1,15 +1,15 @@
 <x-guest-layout>
     <div class="mb-6">
         <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-violet-600">Daftar Akun</p>
-        <h1 class="mt-2 text-2xl font-black tracking-tight text-slate-900">Buat akun mahasiswa</h1>
-        <p class="mt-1 text-sm text-slate-500">Lengkapi data berikut untuk mulai ujian dan latihan TOEFL.</p>
+        <h1 class="mt-2 text-2xl font-black tracking-tight text-slate-900 dark:text-white">Buat akun mahasiswa</h1>
+        <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Lengkapi data berikut untuk mulai ujian dan latihan TOEFL.</p>
     </div>
 
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
         <div>
-            <x-input-label for="name" :value="__('Nama Lengkap')" class="text-sm font-semibold text-slate-700" />
+            <x-input-label for="name" :value="__('Nama Lengkap')" class="text-sm font-semibold text-slate-700 dark:text-slate-300" />
             <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name"
                 class="mt-2 block w-full rounded-xl border border-violet-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-violet-500 focus:ring-violet-500"
                 placeholder="Masukkan nama lengkap">
@@ -17,7 +17,7 @@
         </div>
 
         <div class="mt-4">
-            <x-input-label for="npm" :value="__('NPM')" class="text-sm font-semibold text-slate-700" />
+            <x-input-label for="npm" :value="__('NPM')" class="text-sm font-semibold text-slate-700 dark:text-slate-300" />
             <input id="npm" type="text" name="npm" value="{{ old('npm') }}" autocomplete="off"
                 class="mt-2 block w-full rounded-xl border border-violet-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-violet-500 focus:ring-violet-500"
                 placeholder="Contoh: 23010001">
@@ -26,7 +26,7 @@
 
         <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-                <x-input-label for="class" :value="__('Jurusan')" class="text-sm font-semibold text-slate-700" />
+                <x-input-label for="class" :value="__('Jurusan')" class="text-sm font-semibold text-slate-700 dark:text-slate-300" />
                 <select id="class" name="class" required
                     class="mt-2 block w-full rounded-xl border border-violet-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-violet-500 focus:ring-violet-500">
                     <option value="" disabled {{ old('class') ? '' : 'selected' }}>Pilih jurusan</option>
@@ -38,7 +38,7 @@
             </div>
 
             <div>
-                <x-input-label for="angkatan" :value="__('Angkatan')" class="text-sm font-semibold text-slate-700" />
+                <x-input-label for="angkatan" :value="__('Angkatan')" class="text-sm font-semibold text-slate-700 dark:text-slate-300" />
                 <select id="angkatan" name="angkatan" required
                     class="mt-2 block w-full rounded-xl border border-violet-200 bg-white px-4 py-3 text-sm text-slate-900 shadow-sm transition focus:border-violet-500 focus:ring-violet-500">
                     <option value="" disabled {{ old('angkatan') ? '' : 'selected' }}>Pilih angkatan</option>
@@ -51,7 +51,7 @@
         </div>
 
         <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" class="text-sm font-semibold text-slate-700" />
+            <x-input-label for="email" :value="__('Email')" class="text-sm font-semibold text-slate-700 dark:text-slate-300" />
             <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="username"
                 class="mt-2 block w-full rounded-xl border border-violet-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-violet-500 focus:ring-violet-500"
                 placeholder="nama@email.com">
@@ -59,7 +59,7 @@
         </div>
 
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" class="text-sm font-semibold text-slate-700" />
+            <x-input-label for="password" :value="__('Password')" class="text-sm font-semibold text-slate-700 dark:text-slate-300" />
             <input id="password" type="password" name="password" required autocomplete="new-password"
                 class="mt-2 block w-full rounded-xl border border-violet-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-violet-500 focus:ring-violet-500"
                 placeholder="Minimal 8 karakter">
@@ -67,7 +67,7 @@
         </div>
 
         <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Konfirmasi Password')" class="text-sm font-semibold text-slate-700" />
+            <x-input-label for="password_confirmation" :value="__('Konfirmasi Password')" class="text-sm font-semibold text-slate-700 dark:text-slate-300" />
             <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password"
                 class="mt-2 block w-full rounded-xl border border-violet-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 shadow-sm transition focus:border-violet-500 focus:ring-violet-500"
                 placeholder="Ulangi password">
