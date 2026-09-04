@@ -12,13 +12,32 @@
         <div class="max-w-2xl text-slate-700 dark:text-slate-300 line-clamp-2">{{ $question->question_text }}</div>
     </td>
     <td class="px-6 py-4">
-        @if ($question->audio_path)
-            <span class="inline-flex items-center rounded-full bg-emerald-50 dark:bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-400">
-                <i class="fas fa-check-circle mr-1"></i> Ada
+        @if ($question->category !== 'listening')
+            <span class="inline-flex items-center rounded-full bg-slate-100 dark:bg-white/5 px-2.5 py-1 text-xs font-bold text-slate-400 dark:text-slate-500">
+                -
             </span>
+        @elseif ($question->audio_path)
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center rounded-full bg-emerald-50 dark:bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-700 dark:text-emerald-400">
+                    <i class="fas fa-check-circle mr-1"></i> Siap
+                </span>
+                <button type="button"
+                    onclick="this.nextElementSibling.play()"
+                    class="text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
+                    title="Putar preview">
+                    <i class="fas fa-play-circle"></i>
+                </button>
+                <audio src="{{ Storage::disk('public')->url($question->audio_path) }}" preload="none"></audio>
+            </div>
+        @elseif ($question->audio_transcript)
+            <button type="button"
+                onclick="generateQuestionAudio({{ $question->id }}, {{ $no ?? $question->id }}, this)"
+                class="inline-flex items-center gap-1.5 rounded-lg bg-amber-50 dark:bg-amber-500/10 px-2.5 py-1.5 text-xs font-bold text-amber-700 dark:text-amber-400 hover:bg-amber-100 dark:hover:bg-amber-500/20 transition">
+                <i class="fas fa-bolt"></i> Generate Audio
+            </button>
         @else
             <span class="inline-flex items-center rounded-full bg-slate-100 dark:bg-white/5 px-2.5 py-1 text-xs font-bold text-slate-500 dark:text-slate-500">
-                Tidak ada
+                Tanpa transkrip
             </span>
         @endif
     </td>
@@ -39,9 +58,9 @@
                 class="inline-flex items-center px-3 py-1.5 rounded-lg border-2 border-blue-400 bg-blue-600 text-white text-xs font-bold transition active:scale-90 shadow-md hover:bg-blue-700 hover:border-blue-500">
                 EDIT
             </button>
-            <form action="{{ route('admin.practice-questions.destroy', $question) }}" method="POST" class="inline" onsubmit="return confirm('Yakin ingin menghapus soal latihan ini?');">
+            <form action="{{ route('admin.practice-questions.destroy', $question) }}" method="POST" class="inline" onsubmit="return false;">
                 @csrf @method('DELETE')
-                <button type="submit"
+                <button type="button" onclick="return confirmAdminDelete(this.form)"
                     class="inline-flex items-center px-3 py-1.5 rounded-lg border-2 border-red-400 bg-red-600 text-white text-xs font-bold transition active:scale-90 shadow-md hover:bg-red-700 hover:border-red-500">
                     HAPUS
                 </button>

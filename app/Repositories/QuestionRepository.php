@@ -10,7 +10,10 @@ class QuestionRepository implements QuestionRepositoryInterface
     {
         $query = $this->queryFiltered($filters);
 
-        return $query->latest()->paginate($perPage);
+        return $query
+            ->orderByRaw("CASE category WHEN 'listening' THEN 1 WHEN 'structure' THEN 2 WHEN 'reading' THEN 3 ELSE 4 END")
+            ->orderBy('id')
+            ->paginate($perPage);
     }
 
     public function countByCategory(string $category, ?int $paketSoalId = null): int

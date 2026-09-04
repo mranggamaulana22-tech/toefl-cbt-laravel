@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\PracticeQuestion;
+use App\Models\PracticeProgress;
 use App\Enums\QuestionCategory;
+use App\Models\AppSetting;
+use App\Services\AzureTtsService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Services\QuestionExportService;
 use App\Services\PracticeQuestionImportService;
@@ -17,6 +21,7 @@ class PracticeQuestionController extends Controller
     public function __construct(
         private QuestionExportService $questionExportService,
         private PracticeQuestionImportService $practiceQuestionImportService,
+        private AzureTtsService $azureTtsService,
     )
     {
     }
@@ -30,8 +35,13 @@ class PracticeQuestionController extends Controller
             $query->where('category', $category);
         }
 
-        $practiceQuestions = $query->paginate(10);
-        $categories = PracticeQuestion::distinct('category')->pluck('category')->sort();
+        $practiceQuestions = $query
+            ->orderByRaw("CASE category WHEN 'listening' THEN 1 WHEN 'structure' THEN 2 WHEN 'reading' THEN 3 ELSE 4 END")
+            ->orderBy('id')
+            ->paginate(10);
+        $categories = collect(['listening', 'structure', 'reading'])
+            ->filter(fn ($value) => PracticeQuestion::where('category', $value)->exists())
+            ->values();
         $stats = [
             'total_questions' => PracticeQuestion::count(),
             'listening_count' => PracticeQuestion::where('category', 'listening')->count(),
@@ -39,7 +49,10 @@ class PracticeQuestionController extends Controller
             'reading_count' => PracticeQuestion::where('category', 'reading')->count(),
         ];
 
-        return view('admin.practice-questions.index', compact('practiceQuestions', 'categories', 'category', 'stats'));
+        $initialWoman = AppSetting::get('practice_voice_woman', config('tts_voices.default_woman'));
+        $initialMan = AppSetting::get('practice_voice_man', config('tts_voices.default_man'));
+
+        return view('admin.practice-questions.index', compact('practiceQuestions', 'categories', 'category', 'stats', 'initialWoman', 'initialMan'));
     }
 
     public function create()
@@ -159,6 +172,27 @@ class PracticeQuestionController extends Controller
             ->with('success', 'Soal latihan berhasil dihapus.');
     }
 
+    public function destroyAll(): RedirectResponse
+    {
+        $audioPaths = PracticeQuestion::withTrashed()
+            ->whereNotNull('audio_path')
+            ->pluck('audio_path')
+            ->all();
+        $deletedCount = PracticeQuestion::withTrashed()->count();
+
+        DB::transaction(function () {
+            PracticeProgress::query()->delete();
+            PracticeQuestion::withTrashed()->forceDelete();
+        });
+
+        foreach ($audioPaths as $audioPath) {
+            Storage::disk('public')->delete($audioPath);
+        }
+
+        return redirect()->route('admin.practice-questions.index')
+            ->with('success', "{$deletedCount} soal latihan berhasil dihapus permanen. Histori nilai tetap tersimpan.");
+    }
+
     public function exportXlsx(Request $request): StreamedResponse
     {
         return $this->questionExportService->exportPracticeQuestionsXlsx($request);
@@ -208,5 +242,143 @@ class PracticeQuestionController extends Controller
         }
 
         return redirect()->route('admin.practice-questions.index')->with('success', $message);
+    }
+
+        /**
+     * Ambil setting suara global (untuk Voice Picker modal).
+     */
+    public function getVoiceSettings()
+    {
+        return response()->json([
+            'voice_woman' => AppSetting::get('practice_voice_woman', config('tts_voices.default_woman')),
+            'voice_man' => AppSetting::get('practice_voice_man', config('tts_voices.default_man')),
+            'voices' => config('tts_voices'),
+        ]);
+    }
+
+    /**
+     * Simpan pilihan suara global untuk Soal Latihan.
+     */
+    public function saveVoiceSettings(Request $request)
+    {
+        $validated = $request->validate([
+            'voice_woman' => 'required|string',
+            'voice_man' => 'required|string',
+        ]);
+
+        AppSetting::set('practice_voice_woman', $validated['voice_woman']);
+        AppSetting::set('practice_voice_man', $validated['voice_man']);
+
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * Generate audio Azure TTS untuk SATU soal latihan berdasarkan
+     * audio_transcript yang sudah diketik admin.
+     */
+    public function generateAudio(Request $request, PracticeQuestion $practiceQuestion)
+    {
+        if (blank($practiceQuestion->audio_transcript)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Transkrip Audio masih kosong. Isi dulu sebelum generate.',
+            ], 422);
+        }
+
+        $voiceWoman = AppSetting::get('practice_voice_woman', config('tts_voices.default_woman'));
+        $voiceMan = AppSetting::get('practice_voice_man', config('tts_voices.default_man'));
+
+        try {
+            if ($practiceQuestion->audio_path) {
+                Storage::disk('public')->delete($practiceQuestion->audio_path);
+            }
+
+            $path = $this->azureTtsService->generateFromTranscript(
+                $practiceQuestion->audio_transcript,
+                $voiceWoman,
+                $voiceMan,
+                'practice'
+            );
+
+            $practiceQuestion->update(['audio_path' => $path]);
+
+            return response()->json([
+                'success' => true,
+                'audio_url' => '/storage/' . ltrim($path, '/'),
+                'row_html' => view('admin.practice-questions.partials.row', [
+                    'question' => $practiceQuestion->fresh(),
+                    'no' => $request->input('row_no', $practiceQuestion->id),
+                ])->render(),
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal generate audio: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Generate audio untuk SEMUA soal listening yang belum punya audio
+     * tapi transkripnya sudah diisi. Diproses paralel per-batch (10
+     * sekaligus) via AzureTtsService::generateBatch().
+     */
+    public function generateAudioBatch(Request $request)
+    {
+        $voiceWoman = AppSetting::get('practice_voice_woman', config('tts_voices.default_woman'));
+        $voiceMan = AppSetting::get('practice_voice_man', config('tts_voices.default_man'));
+
+        $questions = PracticeQuestion::where('category', 'listening')
+            ->whereNull('audio_path')
+            ->whereNotNull('audio_transcript')
+            ->where('audio_transcript', '!=', '')
+            ->get(['id', 'audio_transcript']);
+
+        if ($questions->isEmpty()) {
+            return response()->json([
+                'success' => true,
+                'processed' => 0,
+                'total' => 0,
+                'failed' => [],
+                'message' => 'Tidak ada soal yang perlu digenerate.',
+            ]);
+        }
+
+        $items = $questions->map(fn ($q) => ['id' => $q->id, 'transcript' => $q->audio_transcript])->all();
+
+        $result = $this->azureTtsService->generateBatch($items, $voiceWoman, $voiceMan, 'practice', batchSize: 10);
+
+        foreach ($result['success'] as $id => $path) {
+            PracticeQuestion::whereKey($id)->update(['audio_path' => $path]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'processed' => count($result['success']),
+            'total' => $questions->count(),
+            'failed' => $result['failed'],
+        ]);
+    }
+
+    /**
+     * Preview 1 suara (untuk Voice Picker modal).
+     */
+    public function previewVoice(Request $request)
+    {
+        $validated = $request->validate(['voice_id' => 'required|string']);
+
+        try {
+            $path = $this->azureTtsService->previewVoice($validated['voice_id']);
+
+            return response()->json([
+                'success' => true,
+                'audio_url' => '/storage/' . ltrim($path, '/'),
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal generate preview: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 }

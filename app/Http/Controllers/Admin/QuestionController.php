@@ -8,6 +8,7 @@ use App\Models\Question;
 use App\Repositories\QuestionRepositoryInterface;
 use App\Http\Requests\StoreQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
+use App\Services\AzureTtsService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -24,6 +25,7 @@ class QuestionController extends Controller
         QuestionRepositoryInterface $questionRepo,
         private QuestionExportService $questionExportService,
         private QuestionImportService $questionImportService,
+        private AzureTtsService $azureTtsService,
     )
     {
         $this->questionRepo = $questionRepo;
@@ -234,6 +236,116 @@ class QuestionController extends Controller
         }
 
         return redirect()->route('paket-soal.questions.index', $paketSoal)->with('success', $message);
+    }
+
+    /**
+     * Simpan pilihan suara UNTUK PAKET INI SAJA (bukan global) —
+     * berbeda dari Soal Latihan yang settingnya 1 untuk semua.
+     */
+    public function saveVoiceSettings(Request $request, PaketSoal $paketSoal)
+    {
+        $validated = $request->validate([
+            'voice_woman' => 'required|string',
+            'voice_man' => 'required|string',
+        ]);
+
+        $paketSoal->update([
+            'tts_voice_woman' => $validated['voice_woman'],
+            'tts_voice_man' => $validated['voice_man'],
+        ]);
+
+        return response()->json(['success' => true]);
+    }
+
+    /**
+     * Generate audio Azure TTS untuk SATU soal, pakai suara milik paket ini
+     * (fallback ke default global kalau paket belum pernah atur suaranya).
+     */
+    public function generateAudio(Request $request, PaketSoal $paketSoal, Question $question)
+    {
+        $this->ensureQuestionBelongsToPaket($paketSoal, $question);
+
+        if (blank($question->audio_transcript)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Transkrip Audio masih kosong. Isi dulu sebelum generate.',
+            ], 422);
+        }
+
+        $voiceWoman = $paketSoal->tts_voice_woman ?? config('tts_voices.default_woman');
+        $voiceMan = $paketSoal->tts_voice_man ?? config('tts_voices.default_man');
+
+        try {
+            if ($question->audio_path) {
+                Storage::disk('public')->delete($question->audio_path);
+            }
+
+            $path = $this->azureTtsService->generateFromTranscript(
+                $question->audio_transcript,
+                $voiceWoman,
+                $voiceMan,
+                'questions/audio'
+            );
+
+            $question->update(['audio_path' => $path]);
+
+            return response()->json([
+                'success' => true,
+                'audio_url' => '/storage/' . ltrim($path, '/'),
+                'row_html' => view('admin.questions.partials.row', [
+                    'q' => $question->fresh(),
+                    'no' => $request->input('row_no', $question->id),
+                    'paketSoal' => $paketSoal,
+                ])->render(),
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal generate audio: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    /**
+     * Generate audio untuk SEMUA soal listening DI PAKET INI yang belum
+     * punya audio tapi transkripnya sudah diisi. Diproses paralel per-batch
+     * (10 sekaligus) via AzureTtsService::generateBatch().
+     */
+    public function generateAudioBatch(Request $request, PaketSoal $paketSoal)
+    {
+        $voiceWoman = $paketSoal->tts_voice_woman ?? config('tts_voices.default_woman');
+        $voiceMan = $paketSoal->tts_voice_man ?? config('tts_voices.default_man');
+
+        $questions = Question::where('paket_soal_id', $paketSoal->id)
+            ->where('category', 'listening')
+            ->whereNull('audio_path')
+            ->whereNotNull('audio_transcript')
+            ->where('audio_transcript', '!=', '')
+            ->get(['id', 'audio_transcript']);
+
+        if ($questions->isEmpty()) {
+            return response()->json([
+                'success' => true,
+                'processed' => 0,
+                'total' => 0,
+                'failed' => [],
+            ]);
+        }
+
+        $items = $questions->map(fn ($q) => ['id' => $q->id, 'transcript' => $q->audio_transcript])->all();
+
+        $result = $this->azureTtsService->generateBatch($items, $voiceWoman, $voiceMan, 'questions/audio', batchSize: 10);
+
+        foreach ($result['success'] as $id => $path) {
+            Question::whereKey($id)->update(['audio_path' => $path]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'processed' => count($result['success']),
+            'total' => $questions->count(),
+            'failed' => $result['failed'],
+        ]);
     }
 
     /**

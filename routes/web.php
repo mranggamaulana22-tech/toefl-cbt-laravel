@@ -50,12 +50,30 @@ Route::middleware(['auth', 'admin'])->group(function () {
         ->name('paket-soal.questions.import.template');
     Route::post('/admin/paket-soal/{paketSoal}/questions/import', [QuestionController::class, 'import'])
         ->name('paket-soal.questions.import');
+
+    // Azure TTS: setting suara per-paket + generate audio untuk Soal Ujian.
+    // Didaftarkan SEBELUM resource, alasan sama seperti export/import di atas.
+    Route::post('/admin/paket-soal/{paketSoal}/voice-settings', [QuestionController::class, 'saveVoiceSettings'])
+        ->name('paket-soal.voice-settings.save');
+    Route::post('/admin/paket-soal/{paketSoal}/questions/generate-audio-batch', [QuestionController::class, 'generateAudioBatch'])
+        ->name('paket-soal.questions.generate-audio-batch');
+    Route::post('/admin/paket-soal/{paketSoal}/questions/{question}/generate-audio', [QuestionController::class, 'generateAudio'])
+        ->name('paket-soal.questions.generate-audio');
+
     Route::resource('admin/paket-soal/{paketSoal}/questions', QuestionController::class)
         ->names('paket-soal.questions');
 
     Route::get('/admin/practice-questions/export/csv', [PracticeQuestionController::class, 'exportXlsx'])->name('admin.practice-questions.export.csv');
     Route::get('/admin/practice-questions/import/template', [PracticeQuestionController::class, 'importTemplate'])->name('admin.practice-questions.import.template');
     Route::post('/admin/practice-questions/import', [PracticeQuestionController::class, 'import'])->name('admin.practice-questions.import');
+    Route::delete('/admin/practice-questions', [PracticeQuestionController::class, 'destroyAll'])->name('admin.practice-questions.destroy-all');
+
+    Route::get('/admin/practice-questions/voice-settings', [PracticeQuestionController::class, 'getVoiceSettings'])->name('admin.practice-questions.voice-settings.get');
+    Route::post('/admin/practice-questions/voice-settings', [PracticeQuestionController::class, 'saveVoiceSettings'])->name('admin.practice-questions.voice-settings.save');
+    Route::post('/admin/practice-questions/generate-audio-batch', [PracticeQuestionController::class, 'generateAudioBatch'])->name('admin.practice-questions.generate-audio-batch');
+    Route::post('/admin/practice-questions/{practiceQuestion}/generate-audio', [PracticeQuestionController::class, 'generateAudio'])->name('admin.practice-questions.generate-audio');
+    Route::post('/admin/tts/preview-voice', [PracticeQuestionController::class, 'previewVoice'])->name('admin.tts.preview-voice');
+
     Route::resource('admin/practice-questions', PracticeQuestionController::class, ['names' => 'admin.practice-questions']);
     Route::get('/admin/practice-history', [PracticeHistoryController::class, 'index'])->name('practice-history.index');
     Route::get('/admin/practice-history/export/xlsx', [PracticeHistoryController::class, 'exportXlsx'])->name('practice-history.export.csv');

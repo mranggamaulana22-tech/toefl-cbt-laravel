@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="py-8 min-h-screen bg-slate-50 dark:bg-[#0b0d13]"
-         x-data="{ ...crudModal({ baseUrl: '/admin/practice-questions', editTitle: 'Edit Soal Latihan', viewTitle: 'Detail Soal Latihan' }), showImportModal: false }">
+         x-data="{ ...window.crudModalFactory({ baseUrl: '/admin/practice-questions', editTitle: 'Edit Soal Latihan', viewTitle: 'Detail Soal Latihan' }), showImportModal: false }">
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             @if (session('success'))
@@ -111,46 +111,81 @@
             </div>
 
             {{-- Filter & Action Bar --}}
-            <div class="border rounded-2xl p-6 shadow-sm mb-6 bg-white border-slate-200 dark:bg-[#111827] dark:border-white/10">
+            <div class="border rounded-2xl p-5 shadow-sm mb-6 bg-white border-slate-200 dark:bg-[#111827] dark:border-white/10">
                 @php $canAddPracticeQuestion = ($stats['total_questions'] ?? 0) < 140; @endphp
-                <div class="flex flex-col lg:flex-row lg:items-end gap-4">
-                    <form method="GET" action="{{ route('admin.practice-questions.index') }}" class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
-                        <div>
-                            <label class="block text-xs font-bold uppercase tracking-[0.18em] text-slate-500 mb-2">Kategori</label>
-                            <select name="category" class="w-full px-4 py-2.5 rounded-lg text-sm font-medium bg-white text-slate-900 border-slate-200 dark:!bg-[#1e293b] dark:!text-white dark:border-white/10">
+                <div class="flex flex-col gap-4">
+                    <form method="GET" action="{{ route('admin.practice-questions.index') }}" class="flex flex-col sm:flex-row sm:items-end gap-3">
+                        <div class="flex-1 min-w-0">
+                            <label class="block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500 mb-1.5">Kategori</label>
+                            <select name="category" class="w-full px-3.5 py-2 rounded-lg text-sm font-medium bg-white text-slate-900 border-slate-200 dark:!bg-[#1e293b] dark:!text-white dark:border-white/10">
                                 <option value="">Semua Kategori</option>
                                 @foreach ($categories as $cat)
                                     <option value="{{ $cat }}" @selected($category === $cat)>{{ ucfirst($cat) }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <button type="submit" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition active:scale-95 shadow-sm">
-                            Cari
-                        </button>
-                        <a href="{{ route('admin.practice-questions.index') }}" class="px-5 py-2.5 text-sm font-semibold rounded-lg transition text-center active:scale-95 bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10">
-                            Reset
-                        </a>
+                        <div class="flex gap-2 shrink-0">
+                            <button type="submit" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg transition active:scale-95 shadow-sm">
+                                <i class="fas fa-search text-[11px]"></i> Cari
+                            </button>
+                            <a href="{{ route('admin.practice-questions.index') }}" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition active:scale-95 bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10">
+                                <i class="fas fa-rotate-left text-[11px]"></i> Reset
+                            </a>
+                        </div>
                     </form>
 
-                    <div class="flex flex-col sm:flex-row flex-wrap gap-2 lg:justify-end">
-                        <a href="{{ route('admin.practice-questions.import.template') }}" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg transition active:scale-95 border bg-white text-slate-700 border-slate-200 hover:border-slate-300 dark:bg-white/5 dark:text-slate-300 dark:border-white/10 dark:hover:bg-white/10">
-                            <i class="fas fa-download"></i> Download Template
+                    <div class="h-px bg-slate-100 dark:bg-white/5"></div>
+
+                    <div class="flex flex-wrap items-center gap-2">
+                        <a href="{{ route('admin.practice-questions.import.template') }}" title="Download Template"
+                            class="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 active:scale-[0.97] dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10">
+                            <i class="fas fa-download text-[11px]"></i> Template
                         </a>
-                        <button type="button" @click="showImportModal = true" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-lg transition active:scale-95 shadow-sm">
-                            <i class="fas fa-file-import"></i> Import Excel
+                        <button type="button" @click="showImportModal = true" title="Import Excel"
+                            class="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-amber-600 px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-amber-700 active:scale-[0.97]">
+                            <i class="fas fa-file-import text-[11px]"></i> Import
                         </button>
-                        <a href="{{ route('admin.practice-questions.export.csv', ['category' => $category]) }}" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition active:scale-95 shadow-sm">
-                            Export Excel
+                        <a href="{{ route('admin.practice-questions.export.csv', ['category' => $category]) }}" title="Export Excel"
+                            class="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-emerald-600 px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-700 active:scale-[0.97]">
+                            <i class="fas fa-file-export text-[11px]"></i> Export
                         </a>
+
+                        @include('admin.partials.voice-picker-modal', [
+                            'getUrl' => route('admin.practice-questions.voice-settings.get'),
+                            'saveUrl' => route('admin.practice-questions.voice-settings.save'),
+                            'initialWoman' => $initialWoman,
+                            'initialMan' => $initialMan,
+                        ])
+
+                        <button type="button"
+                            onclick="generateAllPracticeAudio(this)" title="Generate Semua Audio yang Kosong"
+                            class="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-purple-600 px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-purple-700 active:scale-[0.97]">
+                            <i class="fas fa-bolt text-[11px]"></i>
+                            <span class="generate-all-label">Generate Audio</span>
+                        </button>
+
+                        <span class="mx-1 hidden h-6 w-px bg-slate-200 dark:bg-white/10 sm:inline-block"></span>
+
                         @if($canAddPracticeQuestion)
-                            <a href="{{ route('admin.practice-questions.create') }}" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition active:scale-95 shadow-sm">
-                                <i class="fas fa-plus"></i> Tambah Soal Latihan
+                            <a href="{{ route('admin.practice-questions.create') }}"
+                                class="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-700 active:scale-[0.97]">
+                                <i class="fas fa-plus text-[11px]"></i> Tambah Soal
                             </a>
                         @else
-                            <span class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-300 text-slate-600 text-sm font-semibold rounded-lg shadow-sm cursor-not-allowed dark:bg-white/10 dark:text-slate-400">
-                                Bank Soal Penuh
+                            <span class="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-slate-200 px-3 text-xs font-semibold text-slate-500 cursor-not-allowed dark:bg-white/10 dark:text-slate-400">
+                                <i class="fas fa-ban text-[11px]"></i> Bank Penuh
                             </span>
                         @endif
+
+                        <form method="POST" action="{{ route('admin.practice-questions.destroy-all') }}"
+                            onsubmit="return openBulkPracticeDeleteModal(this);" class="ml-auto">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" @disabled(($stats['total_questions'] ?? 0) === 0) title="Hapus Semua Soal"
+                                class="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-red-200 bg-red-50 px-3 text-xs font-semibold text-red-600 transition hover:bg-red-100 active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-40 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300 dark:hover:bg-red-500/20">
+                                <i class="fas fa-trash text-[11px]"></i> Hapus Semua
+                            </button>
+                        </form>
                     </div>
                 </div>
 
@@ -166,7 +201,7 @@
 
                 @if ($practiceQuestions->count() > 0)
                     <div class="hidden md:block overflow-x-auto">
-                        <table class="w-full text-sm">
+                        <table class="admin-data-table w-full text-sm">
                             <thead>
                                 <tr class="border-b bg-slate-50 border-slate-200 dark:bg-white/5 dark:border-white/5">
                                     <th class="px-6 py-3 text-left text-xs font-bold uppercase tracking-[0.12em] text-slate-500">No</th>
@@ -303,4 +338,164 @@
             </div>
         </div>
     </div>
+
+    <div id="bulk-delete-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-slate-950/70 px-4 backdrop-blur-sm"
+        role="dialog" aria-modal="true" aria-labelledby="bulk-delete-title">
+        <div class="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-2xl dark:border-white/10 dark:bg-[#111827]">
+            <div class="flex items-start gap-3">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-100 text-red-600 dark:bg-red-500/10 dark:text-red-400">
+                    <i class="fas fa-triangle-exclamation"></i>
+                </div>
+                <div>
+                    <h2 id="bulk-delete-title" class="text-lg font-bold text-slate-900 dark:text-white">Hapus Semua Soal Practice</h2>
+                    <p class="mt-1 text-sm leading-6 text-slate-600 dark:text-slate-300">
+                        Tindakan ini menghapus bank soal dan file audio secara permanen. Histori nilai tetap tersimpan.
+                    </p>
+                </div>
+            </div>
+            <div class="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-500/20 dark:bg-red-500/10">
+                <p class="text-xs font-bold uppercase tracking-[0.14em] text-red-700 dark:text-red-300">Kode verifikasi</p>
+                <p id="bulk-delete-captcha" class="mt-2 select-all text-center font-mono text-2xl font-black tracking-[0.35em] text-red-700 dark:text-red-300"></p>
+            </div>
+            <div id="bulk-delete-captcha-step">
+                <label for="bulk-delete-captcha-input" class="mt-5 block text-sm font-semibold text-slate-700 dark:text-slate-200">Ketik kode di atas</label>
+                <input id="bulk-delete-captcha-input" type="text" autocomplete="off" spellcheck="false"
+                class="mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-center font-mono text-lg font-bold uppercase tracking-[0.25em] text-slate-900 outline-none focus:border-red-500 focus:ring-2 focus:ring-red-500/20 dark:border-white/10 dark:bg-white/5 dark:text-white"
+                onkeydown="if (event.key === 'Enter') { event.preventDefault(); verifyBulkPracticeDelete(); }">
+                <p id="bulk-delete-error" class="mt-2 hidden text-center text-sm font-semibold text-red-600 dark:text-red-400">Kode tidak cocok.</p>
+            </div>
+            <div id="bulk-delete-confirm-step" class="mt-5 hidden rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-500/20 dark:bg-red-500/10">
+                <p class="text-sm font-bold text-red-800 dark:text-red-200">Kode benar.</p>
+                <p class="mt-1 text-sm leading-6 text-red-700 dark:text-red-300">Lanjutkan menghapus semua soal latihan secara permanen?</p>
+            </div>
+            <div class="mt-6 flex gap-3">
+                <button type="button" onclick="closeBulkPracticeDeleteModal()"
+                    class="flex-1 rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-50 dark:border-white/10 dark:text-slate-200 dark:hover:bg-white/5">Batal</button>
+                <button id="bulk-delete-action-button" type="button" onclick="verifyBulkPracticeDelete()"
+                    class="flex-1 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-red-700">Verifikasi</button>
+            </div>
+        </div>
+    </div>
+
+    @push('scripts')
+    <script>
+        let bulkDeleteForm = null;
+        let bulkDeleteCaptcha = '';
+
+        function openBulkPracticeDeleteModal(form) {
+            bulkDeleteForm = form;
+            bulkDeleteCaptcha = Math.random().toString(36).slice(2, 8).toUpperCase();
+            document.getElementById('bulk-delete-captcha').textContent = bulkDeleteCaptcha;
+            document.getElementById('bulk-delete-captcha-input').value = '';
+            document.getElementById('bulk-delete-error').classList.add('hidden');
+            document.getElementById('bulk-delete-captcha-step').classList.remove('hidden');
+            document.getElementById('bulk-delete-confirm-step').classList.add('hidden');
+            document.getElementById('bulk-delete-action-button').textContent = 'Verifikasi';
+            document.getElementById('bulk-delete-action-button').onclick = verifyBulkPracticeDelete;
+            const modal = document.getElementById('bulk-delete-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            window.setTimeout(() => document.getElementById('bulk-delete-captcha-input').focus(), 0);
+            return false;
+        }
+
+        function closeBulkPracticeDeleteModal() {
+            const modal = document.getElementById('bulk-delete-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            bulkDeleteForm = null;
+        }
+
+        function verifyBulkPracticeDelete() {
+            const input = document.getElementById('bulk-delete-captcha-input');
+            const error = document.getElementById('bulk-delete-error');
+
+            if (input.value.trim().toUpperCase() !== bulkDeleteCaptcha) {
+                error.classList.remove('hidden');
+                input.focus();
+                return;
+            }
+
+            document.getElementById('bulk-delete-captcha-step').classList.add('hidden');
+            document.getElementById('bulk-delete-confirm-step').classList.remove('hidden');
+            document.getElementById('bulk-delete-action-button').textContent = 'Hapus Permanen';
+            document.getElementById('bulk-delete-action-button').onclick = submitBulkPracticeDelete;
+        }
+
+        function submitBulkPracticeDelete() {
+            const form = bulkDeleteForm;
+            closeBulkPracticeDeleteModal();
+            form.submit();
+        }
+
+        function generateQuestionAudio(questionId, rowNo, btnEl) {
+            btnEl.disabled = true;
+            btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+
+            fetch(`/admin/practice-questions/${questionId}/generate-audio`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ row_no: rowNo }),
+            })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        const oldRow = document.getElementById('row-' + questionId);
+                        if (oldRow) oldRow.outerHTML = data.row_html;
+                        window.showAdminNotification({
+                            icon: 'success',
+                            title: 'Audio Berhasil Dibuat',
+                            text: 'Audio soal berhasil digenerate dari transcript.',
+                            confirmButtonColor: '#059669',
+                        });
+                    } else {
+                        window.showAdminNotification({ icon: 'error', title: 'Generate Gagal', text: data.message || 'Gagal generate audio.', confirmButtonColor: '#dc2626' });
+                        btnEl.disabled = false;
+                        btnEl.innerHTML = '<i class="fas fa-bolt"></i> Generate Audio';
+                    }
+                })
+                .catch(() => {
+                    window.showAdminNotification({ icon: 'error', title: 'Terjadi Kesalahan', text: 'Audio tidak berhasil dibuat. Coba lagi.', confirmButtonColor: '#dc2626' });
+                    btnEl.disabled = false;
+                    btnEl.innerHTML = '<i class="fas fa-bolt"></i> Generate Audio';
+                });
+        }
+
+        function generateAllPracticeAudio(btnEl) {
+            const label = btnEl.querySelector('.generate-all-label');
+            btnEl.disabled = true;
+            label.textContent = 'Memproses...';
+
+            fetch('/admin/practice-questions/generate-audio-batch', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        const failedCount = Object.keys(data.failed || {}).length;
+                        window.showAdminNotification({
+                            icon: failedCount > 0 ? 'warning' : 'success',
+                            title: failedCount > 0 ? 'Generate Selesai dengan Catatan' : 'Generate Berhasil',
+                            text: `Berhasil membuat ${data.processed} dari ${data.total} audio.${failedCount > 0 ? ` ${failedCount} soal gagal diproses.` : ''}`,
+                            confirmButtonColor: failedCount > 0 ? '#d97706' : '#059669',
+                        }).then(() => window.location.reload());
+                    } else {
+                        window.showAdminNotification({ icon: 'error', title: 'Generate Batch Gagal', text: 'Tidak dapat memproses audio batch.', confirmButtonColor: '#dc2626' });
+                    }
+                })
+                .catch(() => window.showAdminNotification({ icon: 'error', title: 'Terjadi Kesalahan', text: 'Audio batch tidak berhasil diproses. Coba lagi.', confirmButtonColor: '#dc2626' }))
+                .finally(() => {
+                    btnEl.disabled = false;
+                    label.textContent = 'Generate Semua yang Kosong';
+                });
+        }
+    </script>
+    @endpush
 </x-app-layout>

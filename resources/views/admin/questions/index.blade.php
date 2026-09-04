@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="py-8 min-h-screen bg-slate-50 dark:bg-[#0b0d13]"
-         x-data="{ ...crudModal({ baseUrl: '/admin/paket-soal/{{ $paketSoal->id }}/questions', editTitle: 'Edit Soal Ujian', viewTitle: 'Detail Soal Ujian' }), showImportModal: false }">
+         x-data="{ ...window.crudModalFactory({ baseUrl: '/admin/paket-soal/{{ $paketSoal->id }}/questions', editTitle: 'Edit Soal Ujian', viewTitle: 'Detail Soal Ujian' }), showImportModal: false }">
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
@@ -120,66 +120,86 @@
             </div>
 
             {{-- Filter & Action Bar --}}
-            <div class="border rounded-2xl p-6 shadow-sm mb-6 bg-white border-slate-200 dark:bg-[#111827] dark:border-white/10">
+            <div class="border rounded-2xl p-5 shadow-sm mb-6 bg-white border-slate-200 dark:bg-[#111827] dark:border-white/10">
                 @php $canAddQuestion = ($stats['total_questions'] ?? 0) < 140; @endphp
-                <div class="flex flex-col lg:flex-row lg:items-end gap-4">
-                    <form method="GET" action="{{ route('paket-soal.questions.index', $paketSoal) }}" class="flex-1 grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
-                        <div>
-                            <label for="category" class="block text-xs font-bold uppercase tracking-[0.18em] text-slate-500 mb-2">Filter Kategori</label>
-                            <select name="category" id="category" class="w-full px-4 py-2.5 rounded-lg text-sm font-medium bg-white border-slate-200 text-slate-900 dark:bg-[#1e293b] dark:border-white/10 dark:text-white">
+                <div class="flex flex-col gap-4">
+                    <form method="GET" action="{{ route('paket-soal.questions.index', $paketSoal) }}" class="flex flex-col sm:flex-row sm:items-end gap-3">
+                        <div class="flex-1 min-w-0">
+                            <label for="category" class="block text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500 mb-1.5">Filter Kategori</label>
+                            <select name="category" id="category" class="w-full px-3.5 py-2 rounded-lg text-sm font-medium bg-white border-slate-200 text-slate-900 dark:bg-[#1e293b] dark:border-white/10 dark:text-white">
                                 <option value="">Semua Kategori</option>
                                 <option value="listening" @selected($category === 'listening')>🎧 Listening</option>
                                 <option value="structure" @selected($category === 'structure')>📝 Structure</option>
                                 <option value="reading" @selected($category === 'reading')>📖 Reading</option>
                             </select>
                         </div>
-                        <button type="submit" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition active:scale-95 shadow-sm">
-                            Terapkan Filter
-                        </button>
-                        <a href="{{ route('paket-soal.questions.index', $paketSoal) }}" class="px-5 py-2.5 text-sm font-semibold rounded-lg transition text-center active:scale-95 border bg-slate-100 text-slate-700 hover:bg-slate-200 border-transparent dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:border-white/10">
-                            Reset
-                        </a>
+                        <div class="flex gap-2 shrink-0">
+                            <button type="submit" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg transition active:scale-95 shadow-sm">
+                                <i class="fas fa-filter text-[11px]"></i> Terapkan
+                            </button>
+                            <a href="{{ route('paket-soal.questions.index', $paketSoal) }}" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-lg transition active:scale-95 border bg-slate-100 text-slate-700 hover:bg-slate-200 border-transparent dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:border-white/10">
+                                <i class="fas fa-rotate-left text-[11px]"></i> Reset
+                            </a>
+                        </div>
                     </form>
 
-                    <div class="flex flex-col sm:flex-row flex-wrap gap-2 lg:justify-end">
-                        <a href="{{ route('paket-soal.questions.import.template', $paketSoal) }}" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-lg transition active:scale-95 border bg-white text-slate-700 border-slate-200 hover:border-slate-300 dark:bg-white/5 dark:text-slate-300 dark:border-white/10 dark:hover:bg-white/10">
-                            <i class="fas fa-download"></i> Download Template
+                    <div class="h-px bg-slate-100 dark:bg-white/5"></div>
+
+                    <div class="flex flex-wrap items-center gap-2">
+                        <a href="{{ route('paket-soal.questions.import.template', $paketSoal) }}" title="Download Template"
+                            class="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 active:scale-[0.97] dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10">
+                            <i class="fas fa-download text-[11px]"></i> Template
                         </a>
-                        <button type="button" @click="showImportModal = true" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white text-sm font-semibold rounded-lg transition active:scale-95 shadow-sm">
-                            <i class="fas fa-file-import"></i> Import Excel
+                        <button type="button" @click="showImportModal = true" title="Import Excel"
+                            class="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-amber-600 px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-amber-700 active:scale-[0.97]">
+                            <i class="fas fa-file-import text-[11px]"></i> Import
                         </button>
-                        <a href="{{ route('paket-soal.questions.export.csv', [$paketSoal, 'category' => $category]) }}" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg transition active:scale-95 shadow-sm">
-                            <i class="fas fa-file-csv"></i> Export Excel
+                        <a href="{{ route('paket-soal.questions.export.csv', [$paketSoal, 'category' => $category]) }}" title="Export Excel"
+                            class="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-emerald-600 px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-emerald-700 active:scale-[0.97]">
+                            <i class="fas fa-file-csv text-[11px]"></i> Export
                         </a>
+
+                        @include('admin.partials.voice-picker-modal', [
+                            'getUrl' => null,
+                            'saveUrl' => route('paket-soal.voice-settings.save', $paketSoal),
+                            'initialWoman' => $paketSoal->tts_voice_woman,
+                            'initialMan' => $paketSoal->tts_voice_man,
+                        ])
+
+                        <button type="button"
+                            onclick="generateAllExamAudio({{ $paketSoal->id }}, this)" title="Generate Semua Audio yang Kosong"
+                            class="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-purple-600 px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-purple-700 active:scale-[0.97]">
+                            <i class="fas fa-bolt text-[11px]"></i>
+                            <span class="generate-all-label">Generate Audio</span>
+                        </button>
+
+                        <span class="mx-1 hidden h-6 w-px bg-slate-200 dark:bg-white/10 sm:inline-block"></span>
+
                         @if($canAddQuestion)
-                            <a href="{{ route('paket-soal.questions.create', $paketSoal) }}" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg transition active:scale-95 shadow-sm">
-                                <i class="fas fa-plus"></i> Tambah Soal
+                            <a href="{{ route('paket-soal.questions.create', $paketSoal) }}"
+                                class="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-3 text-xs font-semibold text-white shadow-sm transition hover:bg-indigo-700 active:scale-[0.97]">
+                                <i class="fas fa-plus text-[11px]"></i> Tambah Soal
                             </a>
                         @else
-                            <span class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-slate-300 text-slate-600 text-sm font-semibold rounded-lg shadow-sm cursor-not-allowed dark:bg-white/10 dark:text-slate-400">
-                                <i class="fas fa-ban"></i> Bank Soal Penuh
+                            <span class="inline-flex h-9 items-center justify-center gap-1.5 rounded-lg bg-slate-200 px-3 text-xs font-semibold text-slate-500 cursor-not-allowed dark:bg-white/10 dark:text-slate-400">
+                                <i class="fas fa-ban text-[11px]"></i> Bank Penuh
                             </span>
                         @endif
                     </div>
                 </div>
-
-                @unless($canAddQuestion)
-                    <div class="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-300">
-                        Bank soal paket ini sudah mencapai 140 soal. Tambah soal baru dinonaktifkan sementara.
-                    </div>
-                @endunless
             </div>
 
-            {{-- Questions Table --}}
+        {{-- Questions Table --}}
             <div class="border rounded-2xl overflow-hidden shadow-sm relative bg-white border-slate-200 dark:bg-[#111827] dark:border-white/10">
 
                 <div class="hidden md:block overflow-x-auto">
-                    <table class="w-full text-left text-sm">
+                    <table class="admin-data-table w-full text-left text-sm">
                         <thead>
                             <tr class="border-b bg-gray-50 border-slate-200 dark:bg-white/5 dark:border-white/5">
                                 <th class="px-6 py-3 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">No</th>
                                 <th class="px-6 py-3 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">Kategori</th>
                                 <th class="px-6 py-3 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">Pertanyaan</th>
+                                <th class="px-6 py-3 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">Audio</th>
                                 <th class="px-6 py-3 text-xs font-bold uppercase tracking-[0.12em] text-slate-500 text-center">Jawaban</th>
                                 <th class="px-6 py-3 text-center text-xs font-bold uppercase tracking-[0.12em] text-slate-500">Aksi</th>
                             </tr>
@@ -310,4 +330,80 @@
             </div>
         </div>
     </div>
+
+    @push('scripts')
+    <script>
+        window.ttsVoices = @json(config('tts_voices'));
+
+        function generateExamQuestionAudio(paketSoalId, questionId, rowNo, btnEl) {
+            btnEl.disabled = true;
+            btnEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses...';
+
+            fetch(`/admin/paket-soal/${paketSoalId}/questions/${questionId}/generate-audio`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ row_no: rowNo }),
+            })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        const oldRow = document.getElementById('row-' + questionId);
+                        if (oldRow) oldRow.outerHTML = data.row_html;
+                        window.showAdminNotification({
+                            icon: 'success',
+                            title: 'Audio Berhasil Dibuat',
+                            text: 'Audio soal berhasil digenerate dari transcript.',
+                            confirmButtonColor: '#059669',
+                        });
+                    } else {
+                        window.showAdminNotification({ icon: 'error', title: 'Generate Gagal', text: data.message || 'Gagal generate audio.', confirmButtonColor: '#dc2626' });
+                        btnEl.disabled = false;
+                        btnEl.innerHTML = '<i class="fas fa-bolt"></i> Generate Audio';
+                    }
+                })
+                .catch(() => {
+                    window.showAdminNotification({ icon: 'error', title: 'Terjadi Kesalahan', text: 'Audio tidak berhasil dibuat. Coba lagi.', confirmButtonColor: '#dc2626' });
+                    btnEl.disabled = false;
+                    btnEl.innerHTML = '<i class="fas fa-bolt"></i> Generate Audio';
+                });
+        }
+
+        function generateAllExamAudio(paketSoalId, btnEl) {
+            const label = btnEl.querySelector('.generate-all-label');
+            btnEl.disabled = true;
+            label.textContent = 'Memproses...';
+
+            fetch(`/admin/paket-soal/${paketSoalId}/questions/generate-audio-batch`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        const failedCount = Object.keys(data.failed || {}).length;
+                        window.showAdminNotification({
+                            icon: failedCount > 0 ? 'warning' : 'success',
+                            title: failedCount > 0 ? 'Generate Selesai dengan Catatan' : 'Generate Berhasil',
+                            text: `Berhasil membuat ${data.processed} dari ${data.total} audio.${failedCount > 0 ? ` ${failedCount} soal gagal diproses.` : ''}`,
+                            confirmButtonColor: failedCount > 0 ? '#d97706' : '#059669',
+                        }).then(() => window.location.reload());
+                    } else {
+                        window.showAdminNotification({ icon: 'error', title: 'Generate Batch Gagal', text: 'Tidak dapat memproses audio batch.', confirmButtonColor: '#dc2626' });
+                    }
+                })
+                .catch(() => window.showAdminNotification({ icon: 'error', title: 'Terjadi Kesalahan', text: 'Audio batch tidak berhasil diproses. Coba lagi.', confirmButtonColor: '#dc2626' }))
+                .finally(() => {
+                    btnEl.disabled = false;
+                    label.textContent = 'Generate Semua yang Kosong';
+                });
+        }
+    </script>
+    @endpush
+
 </x-app-layout>

@@ -4,6 +4,29 @@
     --admin-hero-shadow: 0 14px 34px rgba(15, 23, 42, 0.12), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
+.admin-theme table.admin-data-table {
+    display: table !important;
+    width: 100% !important;
+    table-layout: auto;
+}
+
+.admin-theme table.admin-data-table thead {
+    display: table-header-group !important;
+}
+
+.admin-theme table.admin-data-table tbody {
+    display: table-row-group !important;
+}
+
+.admin-theme table.admin-data-table tr {
+    display: table-row !important;
+}
+
+.admin-theme table.admin-data-table th,
+.admin-theme table.admin-data-table td {
+    display: table-cell !important;
+}
+
 .admin-theme .bg-gradient-to-br.from-indigo-700.via-indigo-600.to-sky-600,
 .admin-theme .bg-gradient-to-r.from-indigo-700.via-indigo-600.to-sky-600 {
     border-color: var(--admin-hero-border) !important;

@@ -39,5 +39,11 @@ return [
         'timeout' => (int) env('OPENROUTER_TIMEOUT', 60),
         'prompt_version' => env('OPENROUTER_PROMPT_VERSION', 'v1'),
     ],
+    
+    'azure_speech' => [
+        'key' => env('AZURE_SPEECH_KEY'),
+        'region' => env('AZURE_SPEECH_REGION', 'southeastasia'),
+        'narrator_intro' => 'Listen to the following conversation.',
+    ],
 
 ];
